@@ -2,6 +2,7 @@
 #include <complex>
 #include <vector>
 #include <gtest/gtest.h>
+#include "test_utils.h"
 #include "grid.h"
 
 using GridTypes = ::testing::Types<
@@ -23,7 +24,7 @@ class GridConstructorTest : public ::testing::Test {
   void verifyData(const fluid_dynamics::Grid<T>& grid, const std::vector<T>& data) {
     for (size_t i = 0; i < grid.height(); ++i) {
       for (size_t j = 0; j < grid.width(); ++j) {
-        EXPECT_EQ(grid(i, j), data[i * grid.width() + j]);
+          EXPECT_TYPE_EQ(grid(i, j), data[i * grid.width() + j]);
       }
     }
   }
