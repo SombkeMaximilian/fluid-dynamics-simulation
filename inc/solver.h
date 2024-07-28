@@ -19,15 +19,15 @@ class Solver {
   Solver& operator=(const Solver&) = default;
   Solver& operator=(Solver&&) noexcept = default;
 
-  [[nodiscard]] size_t max_iter() const;
   [[nodiscard]] T epsilon() const;
+  [[nodiscard]] size_t max_iter() const;
 
-  void max_iter(size_t max_iter);
   void epsilon(T epsilon);
+  void max_iter(size_t max_iter);
 
  private:
-  size_t max_iter_;
   T epsilon_;
+  size_t max_iter_;
 }; // class Solver
 
 } // namespace fluid_dynamics
