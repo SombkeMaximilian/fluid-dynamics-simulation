@@ -34,6 +34,16 @@ void Solver<T>::max_iter(size_t max_iter) {
 }
 
 template<typename T>
+void Solver<T>::norm(std::function<T(const Grid<T>&, const Grid<T>&)> norm) {
+  norm_ = norm;
+}
+
+template<typename T>
+void Solver<T>::source(std::function<T(size_t, size_t)> source) {
+  source_ = source;
+}
+
+template<typename T>
 T Solver<T>::ComputeNorm(const Grid<T>& prev, const Grid<T>& curr) {
   return norm_(prev, curr);
 }
