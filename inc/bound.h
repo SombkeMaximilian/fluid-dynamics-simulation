@@ -38,6 +38,7 @@ class Bound {
   [[nodiscard]] std::vector<Boundary<T>>& boundaries();
   [[nodiscard]] size_t size() const;
 
+  void SetType(BoundaryType type);
   void AddBoundary(const Boundary<T>& boundary);
   void AddBoundary(Boundary<T>&& boundary);
 

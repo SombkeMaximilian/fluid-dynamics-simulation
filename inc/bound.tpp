@@ -36,6 +36,11 @@ size_t Bound<T>::size() const {
 }
 
 template<typename T>
+void Bound<T>::SetType(BoundaryType type) {
+  type_ = type;
+}
+
+template<typename T>
 void Bound<T>::AddBoundary(const Boundary<T>& boundary) {
   boundaries_.push_back(boundary);
 }
