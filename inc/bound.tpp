@@ -36,7 +36,7 @@ size_t Bound<T>::size() const {
 }
 
 template<typename T>
-void Bound<T>::SetType(BoundaryType type) {
+void Bound<T>::type(BoundaryType type) {
   type_ = type;
 }
 
