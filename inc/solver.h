@@ -41,6 +41,7 @@ class Solver {
 
   static constexpr T kDefaultEpsilon = static_cast<T>(1e-6);
   static constexpr size_t kDefaultMaxIter = 100;
+
   static T DefaultNorm(const Grid<T>& prev, const Grid<T>& curr);
 }; // class Solver
 
