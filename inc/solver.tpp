@@ -11,23 +11,7 @@ template<typename T>
 Solver<T>::Solver(size_t max_iter) : epsilon_{kDefaultEpsilon}, max_iter_{max_iter}, norm_{DefaultNorm} {}
 
 template<typename T>
-Solver<T>::Solver(std::function<T(const Grid<T>&, const Grid<T>&)> norm)
-    : epsilon_{kDefaultEpsilon}, max_iter_{kDefaultMaxIter}, norm_{norm} {}
-
-template<typename T>
 Solver<T>::Solver(T epsilon, size_t max_iter) : epsilon_{epsilon}, max_iter_{max_iter}, norm_{DefaultNorm} {}
-
-template<typename T>
-Solver<T>::Solver(T epsilon, std::function<T(const Grid<T>&, const Grid<T>&)> norm)
-    : epsilon_{epsilon}, max_iter_{kDefaultMaxIter}, norm_{norm} {}
-
-template<typename T>
-Solver<T>::Solver(size_t max_iter, std::function<T(const Grid<T>&, const Grid<T>&)> norm)
-    : epsilon_{kDefaultEpsilon}, max_iter_{max_iter}, norm_{norm} {}
-
-template<typename T>
-Solver<T>::Solver(T epsilon, size_t max_iter, std::function<T(const Grid<T>&, const Grid<T>&)> norm)
-    : epsilon_{epsilon}, max_iter_{max_iter}, norm_{norm} {}
 
 template<typename T>
 T Solver<T>::epsilon() const {
@@ -58,6 +42,11 @@ T Solver<T>::DefaultNorm(const Grid<T>& prev, const Grid<T>& curr) {
     }
   }
   return sqrt(norm);
+}
+
+template<typename T>
+T Solver<T>::DefaultSource(size_t, size_t) {
+  return 0;
 }
 
 } // namespace fluid_dynamics
