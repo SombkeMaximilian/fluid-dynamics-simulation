@@ -32,6 +32,8 @@ class Solver {
   void norm(std:: function<T(const Grid<T>&, const Grid<T>&)> norm);
   void source(std::function<T(size_t, size_t)> source);
 
+  T ComputeNorm(const Grid<T>& prev, const Grid<T>& curr);
+
  private:
   T epsilon_;
   size_t max_iter_;

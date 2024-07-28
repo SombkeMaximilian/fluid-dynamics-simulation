@@ -34,6 +34,11 @@ void Solver<T>::max_iter(size_t max_iter) {
 }
 
 template<typename T>
+T Solver<T>::ComputeNorm(const Grid<T>& prev, const Grid<T>& curr) {
+  return norm_(prev, curr);
+}
+
+template<typename T>
 T Solver<T>::DefaultNorm(const Grid<T>& prev, const Grid<T>& curr) {
   T norm = 0;
   for (size_t i = 0; i < prev.width(); ++i) {
