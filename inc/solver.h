@@ -19,16 +19,10 @@ class Solver {
   Solver& operator=(const Solver&) = default;
   Solver& operator=(Solver&&) noexcept = default;
 
-  [[nodiscard]] const Grid<T>& grid() const;
-  [[nodiscard]] const Grid<T>& new_grid() const;
-  [[nodiscard]] const Bound<T>& boundary_conditions() const;
   [[nodiscard]] size_t max_iter() const;
   [[nodiscard]] T epsilon() const;
 
  private:
-  Grid<T> grid_;
-  Grid<T> new_grid_;
-  Bound<T> boundary_conditions_;
   size_t max_iter_;
   T epsilon_;
 }; // class Solver
