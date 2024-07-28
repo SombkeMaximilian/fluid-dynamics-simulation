@@ -38,13 +38,13 @@ size_t Grid<T>::height() const {
 }
 
 template<typename T>
-T& Grid<T>::operator()(size_t x, size_t y) {
-  return data_[y * width_ + x];
+T& Grid<T>::operator()(size_t i, size_t j) {
+  return data_[i * width_ + j];
 }
 
 template<typename T>
-const T& Grid<T>::operator()(size_t x, size_t y) const {
-  return data_[y * width_ + x];
+const T& Grid<T>::operator()(size_t i, size_t j) const {
+  return data_[i * width_ + j];
 }
 
 } // namespace fluid_dynamics

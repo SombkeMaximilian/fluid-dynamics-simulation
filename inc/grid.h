@@ -26,8 +26,8 @@ class Grid {
   [[nodiscard]] size_t width() const;
   [[nodiscard]] size_t height() const;
 
-  T& operator()(size_t x, size_t y);
-  const T& operator()(size_t x, size_t y) const;
+  T& operator()(size_t i, size_t j);
+  const T& operator()(size_t i, size_t j) const;
 
  private:
   std::vector<T> data_;
