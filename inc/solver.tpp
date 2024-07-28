@@ -2,7 +2,15 @@
 namespace fluid_dynamics {
 
 template<typename T>
-Solver<T>::Solver() : max_iter_{0}, epsilon_{0} {}
+Solver<T>::Solver() : epsilon_{kDefaultEpsilon}, max_iter_{kDefaultMaxIter} {}
+
+template<typename T>
+Solver<T>::Solver(T epsilon) : epsilon_{epsilon}, max_iter_{kDefaultMaxIter} {}
+
+template<typename T>
+Solver<T>::Solver(size_t max_iter) : epsilon_{kDefaultEpsilon}, max_iter_{max_iter} {}
+template<typename T>
+Solver<T>::Solver(T epsilon, size_t max_iter) : epsilon_{epsilon}, max_iter_{max_iter} {}
 
 template<typename T>
 size_t Solver<T>::max_iter() const {

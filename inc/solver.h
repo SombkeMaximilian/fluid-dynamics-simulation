@@ -14,6 +14,9 @@ class Solver {
   Solver();
   Solver(const Solver&) = default;
   Solver(Solver&&) noexcept = default;
+  explicit Solver(T epsilon);
+  explicit Solver(size_t max_iter);
+  Solver(T epsilon, size_t max_iter);
   ~Solver() = default;
 
   Solver& operator=(const Solver&) = default;
@@ -28,6 +31,9 @@ class Solver {
  private:
   T epsilon_;
   size_t max_iter_;
+
+  static constexpr T kDefaultEpsilon = static_cast<T>(1e-6);
+  static constexpr size_t kDefaultMaxIter = 100;
 }; // class Solver
 
 } // namespace fluid_dynamics
