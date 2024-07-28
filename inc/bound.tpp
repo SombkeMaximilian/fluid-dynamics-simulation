@@ -35,4 +35,14 @@ size_t Bound<T>::size() const {
   return boundaries_.size();
 }
 
+template<typename T>
+void Bound<T>::AddBoundary(const Boundary<T>& boundary) {
+  boundaries_.push_back(boundary);
+}
+
+template<typename T>
+void Bound<T>::AddBoundary(Boundary<T>&& boundary) {
+  boundaries_.push_back(std::move(boundary));
+}
+
 } // namespace fluid_dynamics
