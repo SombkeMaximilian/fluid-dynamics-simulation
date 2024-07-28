@@ -3,6 +3,7 @@
 #define FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
 
 #include <vector>
+#include <functional>
 #include "grid.h"
 #include "bound.h"
 
@@ -31,6 +32,7 @@ class Solver {
  private:
   T epsilon_;
   size_t max_iter_;
+  std::function<T(const Grid<T>&, const Grid<T>&)> norm_;
 
   static constexpr T kDefaultEpsilon = static_cast<T>(1e-6);
   static constexpr size_t kDefaultMaxIter = 100;
