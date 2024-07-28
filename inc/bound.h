@@ -16,7 +16,7 @@ enum class BoundaryType {
 template<typename T>
 struct Boundary {
   std::function<bool(size_t, size_t)> condition;
-  T value;
+  std::function<T(size_t, size_t)> value;
 }; // struct Boundary
 
 template<typename T>
