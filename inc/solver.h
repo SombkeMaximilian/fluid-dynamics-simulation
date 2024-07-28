@@ -22,6 +22,9 @@ class Solver {
   [[nodiscard]] size_t max_iter() const;
   [[nodiscard]] T epsilon() const;
 
+  void max_iter(size_t max_iter);
+  void epsilon(T epsilon);
+
  private:
   size_t max_iter_;
   T epsilon_;
