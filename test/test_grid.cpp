@@ -1,5 +1,4 @@
 // File: test/test_grid.cpp
-
 #include <complex>
 #include <vector>
 #include <gtest/gtest.h>
