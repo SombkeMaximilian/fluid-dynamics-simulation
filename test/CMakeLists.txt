@@ -2,7 +2,13 @@ cmake_minimum_required(VERSION 3.27)
 
 enable_testing()
 
-add_executable(runTests test_grid.cpp)
+set(TEST_FILES
+    test_grid.cpp
+    test_bound.cpp
+    test_utils.h
+)
+
+add_executable(runTests ${TEST_FILES})
 target_link_libraries(runTests gtest gtest_main)
 
 add_test(NAME runTests COMMAND runTests)
