@@ -35,6 +35,6 @@ class Solver {
 
 } // namespace fluid_dynamics
 
-#include "solver_serial.tpp"
+#include "solver.tpp"
 
 #endif //FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
