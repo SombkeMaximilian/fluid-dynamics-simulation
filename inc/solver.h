@@ -2,6 +2,7 @@
 #ifndef FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
 #define FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
 
+#include <cmath>
 #include <vector>
 #include <functional>
 #include "grid.h"

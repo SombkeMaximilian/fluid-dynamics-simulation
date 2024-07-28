@@ -57,7 +57,7 @@ T Solver<T>::DefaultNorm(const Grid<T>& prev, const Grid<T>& curr) {
       norm += (prev(i, j) - curr(i, j)) * (prev(i, j) - curr(i, j));
     }
   }
-  return norm;
+  return sqrt(norm);
 }
 
 } // namespace fluid_dynamics
