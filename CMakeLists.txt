@@ -9,7 +9,6 @@ include_directories(inc)
 
 set(SERIAL_SOURCE_FILES
     src/main.cpp
-    src/solver.cpp
 )
 add_executable(FluidDynamicsSimulationSerial ${SERIAL_SOURCE_FILES})
 
