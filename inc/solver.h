@@ -32,8 +32,6 @@ class Solver {
   void norm(std:: function<T(const Grid<T>&, const Grid<T>&)> norm);
   void source(std::function<T(size_t, size_t)> source);
 
-  T ComputeNorm(const Grid<T>& prev, const Grid<T>& curr);
-
   Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
   Grid<T> Solve(const Grid<T>& initial, const Bound<T>& bound);
 

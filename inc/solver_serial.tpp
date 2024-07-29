@@ -36,9 +36,8 @@ Grid<T> Solver<T>::Solve(const Grid<T>& initial, const Bound<T>& bound) {
     }
   }
   for (size_t iter = 0; iter < max_iter_; ++iter) {
-    std::cout << "Iteration: " << iter << std::endl;
     curr = Update(prev, bound);
-    if (ComputeNorm(prev, curr) < epsilon_) {
+    if (norm_(prev, curr) < epsilon_) {
       break;
     }
     prev = curr;

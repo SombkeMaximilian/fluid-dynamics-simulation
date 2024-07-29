@@ -44,11 +44,6 @@ void Solver<T>::source(std::function<T(size_t, size_t)> source) {
 }
 
 template<typename T>
-T Solver<T>::ComputeNorm(const Grid<T>& prev, const Grid<T>& curr) {
-  return norm_(prev, curr);
-}
-
-template<typename T>
 T Solver<T>::DefaultNorm(const Grid<T>& prev, const Grid<T>& curr) {
   T norm = 0;
 
