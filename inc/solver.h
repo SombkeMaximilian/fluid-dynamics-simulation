@@ -34,6 +34,9 @@ class Solver {
 
   T ComputeNorm(const Grid<T>& prev, const Grid<T>& curr);
 
+  Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
+  Grid<T> Solve(const Grid<T>& initial, const Bound<T>& bound);
+
  private:
   T epsilon_;
   size_t max_iter_;
@@ -50,5 +53,6 @@ class Solver {
 } // namespace fluid_dynamics
 
 #include "solver.tpp"
+#include "solver_serial.tpp"
 
 #endif //FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
