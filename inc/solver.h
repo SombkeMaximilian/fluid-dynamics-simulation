@@ -29,7 +29,7 @@ class Solver {
 
   void epsilon(T epsilon);
   void max_iter(size_t max_iter);
-  void norm(std:: function<T(const Grid<T>&, const Grid<T>&)> norm);
+  void norm(std::function<T(const Grid<T>&, const Grid<T>&)> norm);
   void source(std::function<T(size_t, size_t)> source);
 
   Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
