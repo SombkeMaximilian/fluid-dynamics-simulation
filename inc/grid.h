@@ -3,6 +3,7 @@
 #define FLUID_DYNAMICS_SIMULATION_INC_GRID_H_
 
 #include <vector>
+#include <functional>
 
 namespace fluid_dynamics {
 
@@ -28,6 +29,14 @@ class Grid {
 
   T& operator()(size_t i, size_t j);
   const T& operator()(size_t i, size_t j) const;
+
+  void Resize(size_t width, size_t height, std::pair<size_t, size_t> offset);
+  void Resize(size_t width, size_t height);
+
+  void Fill(T value);
+  void Fill(const std::vector<T>& values);
+  void Fill(std::vector<T>&& values);
+  void Fill(std::function<T(size_t, size_t)> value_func);
 
  private:
   std::vector<T> data_;
