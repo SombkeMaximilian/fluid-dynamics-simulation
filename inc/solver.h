@@ -34,6 +34,7 @@ class Solver {
 
   Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
   Grid<T> Solve(const Grid<T>& initial, const Bound<T>& bound);
+  Grid<std::pair<T, T>> Gradient(const Grid<T>& field);
 
  private:
   T epsilon_;
