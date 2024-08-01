@@ -54,4 +54,4 @@ class Solver {
 #include "solver.tpp"
 #include "solver_serial.tpp"
 
-#endif //FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
+#endif // FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_

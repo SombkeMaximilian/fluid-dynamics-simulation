@@ -51,4 +51,4 @@ class Bound {
 
 #include "bound.tpp"
 
-#endif //FLUID_DYNAMICS_SIMULATION_INC_BOUND_H_
+#endif // FLUID_DYNAMICS_SIMULATION_INC_BOUND_H_

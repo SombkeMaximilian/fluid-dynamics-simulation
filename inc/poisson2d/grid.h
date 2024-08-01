@@ -51,4 +51,4 @@ class Grid {
 #include "grid.tpp"
 #include "grid_io_serial.tpp"
 
-#endif //FLUID_DYNAMICS_SIMULATION_INC_GRID_H_
+#endif // FLUID_DYNAMICS_SIMULATION_INC_GRID_H_
