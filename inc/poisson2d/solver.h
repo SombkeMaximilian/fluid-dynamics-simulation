@@ -1,4 +1,4 @@
-// File: inc/solver.h
+// File: inc/poisson2d/solver.h
 #ifndef FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
 #define FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
 

@@ -1,4 +1,4 @@
-// File: inc/io_serial.h
+// File: inc/poisson2d/grid_io_serial.h
 namespace fluid_dynamics {
 
 template<typename T>

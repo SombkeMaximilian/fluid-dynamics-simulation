@@ -1,4 +1,4 @@
-// File: inc/solver.tpp
+// File: inc/poisson2d/solver.tpp
 namespace fluid_dynamics {
 
 template<typename T>

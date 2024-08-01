@@ -1,4 +1,4 @@
-// File: inc/bound.h
+// File: inc/poisson2d/bound.h
 #ifndef FLUID_DYNAMICS_SIMULATION_INC_BOUND_H_
 #define FLUID_DYNAMICS_SIMULATION_INC_BOUND_H_
 

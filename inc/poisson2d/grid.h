@@ -1,4 +1,4 @@
-// File: inc/grid.h
+// File: inc/poisson2d/grid.h
 #ifndef FLUID_DYNAMICS_SIMULATION_INC_GRID_H_
 #define FLUID_DYNAMICS_SIMULATION_INC_GRID_H_
 
