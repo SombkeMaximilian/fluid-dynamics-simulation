@@ -2,6 +2,8 @@
 #ifndef FLUID_DYNAMICS_SIMULATION_INC_GRID_H_
 #define FLUID_DYNAMICS_SIMULATION_INC_GRID_H_
 
+#include <fstream>
+#include <utility>
 #include <vector>
 #include <functional>
 
@@ -47,5 +49,6 @@ class Grid {
 } // namespace fluid_dynamics
 
 #include "grid.tpp"
+#include "grid_io_serial.tpp"
 
 #endif //FLUID_DYNAMICS_SIMULATION_INC_GRID_H_
