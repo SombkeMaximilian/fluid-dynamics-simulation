@@ -2,8 +2,8 @@
 #include <complex>
 #include <vector>
 #include <gtest/gtest.h>
-#include "grid.h"
-#include "bound.h"
+#include "poisson2d/grid.h"
+#include "poisson2d/bound.h"
 
 using BoundTypes = ::testing::Types<
     int,

@@ -3,7 +3,7 @@
 #include <vector>
 #include <gtest/gtest.h>
 #include "test_utils.h"
-#include "grid.h"
+#include "poisson2d/grid.h"
 
 using GridTypes = ::testing::Types<
     int,
