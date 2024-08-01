@@ -20,7 +20,6 @@ void WriteGridBinary(const Grid<T>& grid, const std::string& filename) {
     for (size_t j = 0; j < grid.height(); ++j) {
       file.write(reinterpret_cast<const char*>(&grid(i, j)), sizeof(T));
     }
-    file.write("\n", sizeof(char));
   }
   file.close();
 }
@@ -38,7 +37,6 @@ void WriteGridBinary(const Grid<std::pair<T, T>>& grid, const std::string& filen
       file.write(reinterpret_cast<const char*>(&grid(i, j).first), sizeof(T));
       file.write(reinterpret_cast<const char*>(&grid(i, j).second), sizeof(T));
     }
-    file.write("\n", sizeof(char));
   }
   file.close();
 }
@@ -53,9 +51,8 @@ void WriteGridText(const Grid<T>& grid, const std::string& filename) {
 
   for (size_t i = 0; i < grid.width(); ++i) {
     for (size_t j = 0; j < grid.height(); ++j) {
-      file << grid(i, j) << " ";
+      file << j << " " << i << " " << grid(i, j) << " ";
     }
-    file << "\n";
   }
   file.close();
 }
@@ -70,9 +67,8 @@ void WriteGridText(const Grid<std::pair<T, T>>& grid, const std::string& filenam
 
   for (size_t i = 0; i < grid.width(); ++i) {
     for (size_t j = 0; j < grid.height(); ++j) {
-      file << grid(i, j).first << " " << grid(i, j).second << " ";
+      file << j << " " << i << " " << grid(i, j).first << " " << grid(i, j).second << "\n";;
     }
-    file << "\n";
   }
   file.close();
 }
