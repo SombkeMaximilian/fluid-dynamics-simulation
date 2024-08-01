@@ -9,8 +9,8 @@ void WriteGridBinary(const Grid<T>& grid, const std::string& filename) {
       throw std::runtime_error("Failed to open file: " + filename);
   }
 
-  for (size_t i = 0; i < grid.width(); ++i) {
-    for (size_t j = 0; j < grid.height(); ++j) {
+  for (size_t i = 0; i < grid.cols(); ++i) {
+    for (size_t j = 0; j < grid.rows(); ++j) {
       file.write(reinterpret_cast<const char*>(&grid(i, j)), sizeof(T));
     }
   }
@@ -25,8 +25,8 @@ void WriteGridBinary(const Grid<std::pair<T, T>>& grid, const std::string& filen
       throw std::runtime_error("Failed to open file: " + filename);
   }
 
-  for (size_t i = 0; i < grid.width(); ++i) {
-    for (size_t j = 0; j < grid.height(); ++j) {
+  for (size_t i = 0; i < grid.cols(); ++i) {
+    for (size_t j = 0; j < grid.rows(); ++j) {
       file.write(reinterpret_cast<const char*>(&grid(i, j).first), sizeof(T));
       file.write(reinterpret_cast<const char*>(&grid(i, j).second), sizeof(T));
     }
@@ -42,8 +42,8 @@ void WriteGridText(const Grid<T>& grid, const std::string& filename) {
       throw std::runtime_error("Failed to open file: " + filename);
   }
 
-  for (size_t i = 0; i < grid.width(); ++i) {
-    for (size_t j = 0; j < grid.height(); ++j) {
+  for (size_t i = 0; i < grid.cols(); ++i) {
+    for (size_t j = 0; j < grid.rows(); ++j) {
       file << j << " " << i << " " << grid(i, j) << " ";
     }
   }
@@ -58,8 +58,8 @@ void WriteGridText(const Grid<std::pair<T, T>>& grid, const std::string& filenam
       throw std::runtime_error("Failed to open file: " + filename);
   }
 
-  for (size_t i = 0; i < grid.width(); ++i) {
-    for (size_t j = 0; j < grid.height(); ++j) {
+  for (size_t i = 0; i < grid.cols(); ++i) {
+    for (size_t j = 0; j < grid.rows(); ++j) {
       file << j << " " << i << " " << grid(i, j).first << " " << grid(i, j).second << "\n";
     }
   }

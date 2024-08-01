@@ -18,22 +18,22 @@ class Grid {
   explicit Grid(size_t dim);
   Grid(size_t dim, const std::vector<T>& data);
   Grid(size_t dim, std::vector<T>&& data);
-  Grid(size_t width, size_t height);
-  Grid(size_t width, size_t height, const std::vector<T>& data);
-  Grid(size_t width, size_t height, std::vector<T>&& data);
+  Grid(size_t rows, size_t cols);
+  Grid(size_t rows, size_t cols, const std::vector<T>& data);
+  Grid(size_t rows, size_t cols, std::vector<T>&& data);
   ~Grid() = default;
 
   Grid& operator=(const Grid&) = default;
   Grid& operator=(Grid&&) noexcept = default;
 
-  [[nodiscard]] size_t width() const;
-  [[nodiscard]] size_t height() const;
+  [[nodiscard]] size_t rows() const;
+  [[nodiscard]] size_t cols() const;
 
   T& operator()(size_t i, size_t j);
   const T& operator()(size_t i, size_t j) const;
 
-  void Resize(size_t width, size_t height, std::pair<size_t, size_t> offset);
-  void Resize(size_t width, size_t height);
+  void Resize(size_t rows, size_t cols, std::pair<size_t, size_t> offset);
+  void Resize(size_t rows, size_t cols);
 
   void Fill(T value);
   void Fill(const std::vector<T>& values);
@@ -42,8 +42,8 @@ class Grid {
 
  private:
   std::vector<T> data_;
-  size_t width_;
-  size_t height_;
+  size_t rows_;
+  size_t cols_;
 }; // class Grid
 
 } // namespace fluid_dynamics

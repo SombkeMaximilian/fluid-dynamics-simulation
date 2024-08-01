@@ -47,8 +47,8 @@ template<typename T>
 T Solver<T>::DefaultNorm(const Grid<T>& prev, const Grid<T>& curr) {
   T norm = 0;
 
-  for (size_t i = 0; i < prev.width(); ++i) {
-    for (size_t j = 0; j < prev.height(); ++j) {
+  for (size_t i = 0; i < prev.rows(); ++i) {
+    for (size_t j = 0; j < prev.cols(); ++j) {
       norm += (prev(i, j) - curr(i, j)) * (prev(i, j) - curr(i, j));
     }
   }

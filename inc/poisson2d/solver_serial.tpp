@@ -3,11 +3,11 @@ namespace fluid_dynamics {
 
 template<typename T>
 Grid<T> Solver<T>::Update(const Grid<T>& prev, const Bound<T>& bound) {
-  Grid<T> next{prev.width(), prev.height()};
+  Grid<T> next{prev.rows(), prev.cols()};
   bool is_boundary = false;
 
-  for (size_t i = 0; i < prev.width(); ++i) {
-    for (size_t j = 0; j < prev.height(); ++j) {
+  for (size_t i = 0; i < prev.rows(); ++i) {
+    for (size_t j = 0; j < prev.cols(); ++j) {
       for (auto boundary : bound.boundaries()) {
         if (boundary.condition(i, j)) {
           next(i, j) = boundary.value(i, j);
@@ -28,10 +28,10 @@ Grid<T> Solver<T>::Update(const Grid<T>& prev, const Bound<T>& bound) {
 template<typename T>
 Grid<T> Solver<T>::Solve(const Grid<T>& initial, const Bound<T>& bound) {
   Grid<T> prev{initial};
-  Grid<T> curr{initial.width(), initial.height()};
+  Grid<T> curr{initial.rows(), initial.cols()};
 
-  for (size_t i = 0; i < initial.width(); ++i) {
-    for (size_t j = 0; j < initial.height(); ++j) {
+  for (size_t i = 0; i < initial.cols(); ++i) {
+    for (size_t j = 0; j < initial.rows(); ++j) {
       prev(i, j) = source_(i, j);
     }
   }
@@ -48,10 +48,10 @@ Grid<T> Solver<T>::Solve(const Grid<T>& initial, const Bound<T>& bound) {
 
 template<typename T>
 Grid<std::pair<T, T>> Solver<T>::Gradient(const Grid<T>& field) {
-  Grid<std::pair<T, T>> grad{field.width(), field.height()};
+  Grid<std::pair<T, T>> grad{field.rows(), field.cols()};
 
-  for (size_t i = 1; i < field.width() - 1; ++i) {
-    for (size_t j = 1; j < field.height() - 1; ++j) {
+  for (size_t i = 1; i < field.rows() - 1; ++i) {
+    for (size_t j = 1; j < field.cols() - 1; ++j) {
       grad(i, j).first = (field(i, j + 1) - field(i, j - 1)) / 2;
       grad(i, j).second = (field(i + 1, j) - field(i - 1,j)) / 2;
     }
