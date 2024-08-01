@@ -21,10 +21,10 @@ class GridConstructorTest : public ::testing::Test {
     EXPECT_EQ(grid.cols(), expected_cols);
   }
 
-  void verifyData(const fluid_dynamics::Grid<T>& grid, const std::vector<T>& data) {
-    for (size_t i = 0; i < grid.rows(); ++i) {
-      for (size_t j = 0; j < grid.cols(); ++j) {
-          EXPECT_TYPE_EQ(grid(i, j), data[i * grid.cols() + j]);
+  void verifyData(const fluid_dynamics::Grid<T>& actual, const std::vector<T>& expected) {
+    for (size_t i = 0; i < actual.rows(); ++i) {
+      for (size_t j = 0; j < actual.cols(); ++j) {
+          EXPECT_TYPE_EQ(actual(i, j), expected[i * actual.cols() + j]);
       }
     }
   }
