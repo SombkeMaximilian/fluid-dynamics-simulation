@@ -32,7 +32,6 @@ class Solver {
   void norm(std::function<T(const Grid<T>&, const Grid<T>&)> norm);
   void source(std::function<T(size_t, size_t)> source);
 
-  Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
   Grid<T> Solve(const Grid<T>& initial, const Bound<T>& bound);
   Grid<std::pair<T, T>> Gradient(const Grid<T>& field);
 
@@ -47,6 +46,8 @@ class Solver {
 
   static T DefaultNorm(const Grid<T>& prev, const Grid<T>& curr);
   static T DefaultSource(size_t, size_t);
+
+  Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
 }; // class Solver
 
 } // namespace fluid_dynamics

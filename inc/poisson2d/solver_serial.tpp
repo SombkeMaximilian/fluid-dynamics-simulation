@@ -2,30 +2,6 @@
 namespace fluid_dynamics {
 
 template<typename T>
-Grid<T> Solver<T>::Update(const Grid<T>& prev, const Bound<T>& bound) {
-  Grid<T> next{prev.rows(), prev.cols()};
-  bool is_boundary = false;
-
-  for (size_t i = 0; i < prev.rows(); ++i) {
-    for (size_t j = 0; j < prev.cols(); ++j) {
-      for (auto boundary : bound.boundaries()) {
-        if (boundary.condition(i, j)) {
-          next(i, j) = boundary.value(i, j);
-          is_boundary = true;
-          break;
-        }
-      }
-      if (!is_boundary) {
-        next(i, j) = (prev(i - 1, j) + prev(i + 1, j) + prev(i, j - 1) + prev(i, j + 1) + source_(i, j)) / 4;
-      }
-      is_boundary = false;
-    }
-  }
-
-  return next;
-}
-
-template<typename T>
 Grid<T> Solver<T>::Solve(const Grid<T>& initial, const Bound<T>& bound) {
   Grid<T> prev{initial};
   Grid<T> curr{initial.rows(), initial.cols()};
@@ -58,6 +34,30 @@ Grid<std::pair<T, T>> Solver<T>::Gradient(const Grid<T>& field) {
   }
 
   return grad;
+}
+
+template<typename T>
+Grid<T> Solver<T>::Update(const Grid<T>& prev, const Bound<T>& bound) {
+  Grid<T> next{prev.rows(), prev.cols()};
+  bool is_boundary = false;
+
+  for (size_t i = 0; i < prev.rows(); ++i) {
+    for (size_t j = 0; j < prev.cols(); ++j) {
+      for (auto boundary : bound.boundaries()) {
+        if (boundary.condition(i, j)) {
+          next(i, j) = boundary.value(i, j);
+          is_boundary = true;
+          break;
+        }
+      }
+      if (!is_boundary) {
+        next(i, j) = (prev(i - 1, j) + prev(i + 1, j) + prev(i, j - 1) + prev(i, j + 1) + source_(i, j)) / 4;
+      }
+      is_boundary = false;
+    }
+  }
+
+  return next;
 }
 
 } // namespace fluid_dynamics
