@@ -28,6 +28,16 @@ Grid<T>::Grid(size_t rows, size_t cols, std::vector<T>&& data)
     : data_{std::move(data)}, rows_{rows}, cols_{cols} {}
 
 template<typename T>
+T* Grid<T>::data() {
+  return data_.data();
+}
+
+template<typename T>
+T* Grid<T>::data(size_t i, size_t j) {
+  return data_.data() + i * cols_ + j;
+}
+
+template<typename T>
 size_t Grid<T>::rows() const {
   return rows_;
 }

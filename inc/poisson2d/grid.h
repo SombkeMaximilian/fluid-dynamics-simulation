@@ -26,6 +26,9 @@ class Grid {
   Grid& operator=(const Grid&) = default;
   Grid& operator=(Grid&&) noexcept = default;
 
+  [[nodiscard]] T* data();
+  [[nodiscard]] T* data(size_t i, size_t j);
+
   [[nodiscard]] size_t rows() const;
   [[nodiscard]] size_t cols() const;
 
