@@ -49,6 +49,11 @@ class Grid {
 } // namespace fluid_dynamics
 
 #include "grid.tpp"
+
+#ifndef USE_PARALLEL
 #include "grid_io_serial.tpp"
+#else
+#include "grid_io_parallel.tpp"
+#endif
 
 #endif // FLUID_DYNAMICS_SIMULATION_INC_GRID_H_
