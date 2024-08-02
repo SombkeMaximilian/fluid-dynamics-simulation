@@ -12,14 +12,12 @@ include_directories(inc)
 set(SERIAL_SOURCE_FILES
     examples/serial/main.cpp
 )
+add_executable(FDSimSerial ${SERIAL_SOURCE_FILES})
+
 set(MPI_SOURCE_FILES
     examples/mpi/main.cpp
 )
-
-add_executable(FDSimSerial ${SERIAL_SOURCE_FILES})
 add_executable(FDSimMPI ${MPI_SOURCE_FILES})
-
-target_compile_definitions(FDSimMPI PRIVATE USE_PARALLEL)
 target_link_libraries(FDSimMPI MPI::MPI_CXX)
 
 # Google Test setup
