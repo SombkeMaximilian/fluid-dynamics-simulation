@@ -54,10 +54,4 @@ class Solver {
 
 #include "solver.tpp"
 
-#ifndef USE_PARALLEL
-#include "solver_serial.tpp"
-#else
-#include "solver_parallel.tpp"
-#endif
-
 #endif // FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_H_
