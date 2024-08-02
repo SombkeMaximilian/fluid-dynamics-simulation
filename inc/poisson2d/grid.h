@@ -43,6 +43,11 @@ class Grid {
   void Fill(std::vector<T>&& values);
   void Fill(std::function<T(size_t, size_t)> value_func);
 
+  template<typename U> friend void WriteGridBinary(const Grid<U>& grid, const std::string& filename);
+  template<typename U> friend void WriteGridBinary(const Grid<std::pair<U, U>>& grid, const std::string& filename);
+  template<typename U> friend void WriteGridText(const Grid<U>& grid, const std::string& filename);
+  template<typename U> friend void WriteGridText(const Grid<std::pair<U, U>>& grid, const std::string& filename);
+
  private:
   std::vector<T> data_;
   size_t rows_;
@@ -52,11 +57,5 @@ class Grid {
 } // namespace fluid_dynamics
 
 #include "grid.tpp"
-
-#ifndef USE_PARALLEL
-#include "grid_io_serial.tpp"
-#else
-#include "grid_io_parallel.tpp"
-#endif
 
 #endif // FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_GRID_H_
