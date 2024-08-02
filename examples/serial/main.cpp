@@ -1,6 +1,3 @@
-#include <cmath>
-#include <iomanip>
-#include <iostream>
 #include "poisson2d.h"
 
 fluid_dynamics::Bound<double> CreateBound(size_t L) {
@@ -38,7 +35,7 @@ fluid_dynamics::Bound<double> CreateBound(size_t L) {
   });
   // y = 0, L/4 < x < L/2, phi(x, y) = 14 - (x - L/4) * 56/L
   bound.AddBoundary({
-    [L_half, L_quarter, three_L_quarter](size_t i, size_t j) -> bool {
+    [L_half, L_quarter](size_t i, size_t j) -> bool {
       return i == 0 && j > L_quarter && j < L_half;
     },
     [L, L_quarter](size_t i, size_t j) -> double {
