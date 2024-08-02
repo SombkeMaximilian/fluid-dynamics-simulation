@@ -1,6 +1,6 @@
 // File: inc/poisson2d/bound.h
-#ifndef FLUID_DYNAMICS_SIMULATION_INC_BOUND_H_
-#define FLUID_DYNAMICS_SIMULATION_INC_BOUND_H_
+#ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_BOUND_H_
+#define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_BOUND_H_
 
 #include <vector>
 #include <functional>
@@ -51,4 +51,4 @@ class Bound {
 
 #include "bound.tpp"
 
-#endif // FLUID_DYNAMICS_SIMULATION_INC_BOUND_H_
+#endif // FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_BOUND_H_

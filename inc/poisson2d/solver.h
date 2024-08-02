@@ -1,6 +1,6 @@
 // File: inc/poisson2d/solver.h
-#ifndef FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
-#define FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
+#ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_H_
+#define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_H_
 
 #include <cmath>
 #include <vector>
@@ -60,4 +60,4 @@ class Solver {
 #include "solver_parallel.tpp"
 #endif
 
-#endif // FLUID_DYNAMICS_SIMULATION_INC_SOLVER_H_
+#endif // FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_H_
