@@ -42,8 +42,8 @@ class MpiGrid2D {
   void boundary_col(MPI_Datatype boundary_col);
 
   void CreateBoundaryRowType(size_t cols, MPI_Datatype type);
-  void CreateBoundaryColType(size_t rows, size_t cols, MPI_Datatype type);
-  void CreateBoundaryTypes(size_t rows, size_t cols, MPI_Datatype type);
+  void CreateBoundaryColType(size_t rows, size_t cols_offset, MPI_Datatype type);
+  void CreateBoundaryTypes(size_t rows, size_t cols, size_t cols_offset, MPI_Datatype type);
 
   void FreeBoundaryRowType();
   void FreeBoundaryColType();

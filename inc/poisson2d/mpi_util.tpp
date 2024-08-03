@@ -161,13 +161,13 @@ void MpiGrid2D::CreateBoundaryRowType(size_t cols, MPI_Datatype type) {
   CreateRowType(static_cast<int>(cols), type);
 }
 
-void MpiGrid2D::CreateBoundaryColType(size_t rows, size_t cols, MPI_Datatype type) {
-  CreateColType(static_cast<int>(rows), static_cast<int>(cols), type);
+void MpiGrid2D::CreateBoundaryColType(size_t rows, size_t cols_offset, MPI_Datatype type) {
+  CreateColType(static_cast<int>(rows), static_cast<int>(cols_offset), type);
 }
 
-void MpiGrid2D::CreateBoundaryTypes(size_t rows, size_t cols, MPI_Datatype type) {
+void MpiGrid2D::CreateBoundaryTypes(size_t rows, size_t cols, size_t cols_offset, MPI_Datatype type) {
   CreateRowType(static_cast<int>(cols), type);
-  CreateColType(static_cast<int>(rows), static_cast<int>(cols), type);
+  CreateColType(static_cast<int>(rows), static_cast<int>(cols_offset), type);
 }
 
 void MpiGrid2D::FreeBoundaryRowType() {
