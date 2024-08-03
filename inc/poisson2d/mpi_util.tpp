@@ -16,6 +16,8 @@ MpiGrid2D::MpiGrid2D()
   MPI_Dims_create(size_, 2, dims_);
   MPI_Cart_create(MPI_COMM_WORLD, 2, dims_, periods_, 1, &comm_);
   MPI_Cart_coords(comm_, rank_, 2, coords_);
+  MPI_Cart_shift(comm_, 0, 1, &neighbors_[0], &neighbors_[1]);
+  MPI_Cart_shift(comm_, 1, 1, &neighbors_[2], &neighbors_[3]);
 }
 
 MpiGrid2D::MpiGrid2D(MPI_Comm comm)
@@ -32,6 +34,8 @@ MpiGrid2D::MpiGrid2D(MPI_Comm comm)
   MPI_Dims_create(size_, 2, dims_);
   MPI_Cart_create(MPI_COMM_WORLD, 2, dims_, periods_, 1, &comm_);
   MPI_Cart_coords(comm_, rank_, 2, coords_);
+  MPI_Cart_shift(comm_, 0, 1, &neighbors_[0], &neighbors_[1]);
+  MPI_Cart_shift(comm_, 1, 1, &neighbors_[2], &neighbors_[3]);
 }
 
 MpiGrid2D::MpiGrid2D(int argc, char** argv)
@@ -48,6 +52,8 @@ MpiGrid2D::MpiGrid2D(int argc, char** argv)
   MPI_Dims_create(size_, 2, dims_);
   MPI_Cart_create(MPI_COMM_WORLD, 2, dims_, periods_, 1, &comm_);
   MPI_Cart_coords(comm_, rank_, 2, coords_);
+  MPI_Cart_shift(comm_, 0, 1, &neighbors_[0], &neighbors_[1]);
+  MPI_Cart_shift(comm_, 1, 1, &neighbors_[2], &neighbors_[3]);
 }
 
 MpiGrid2D::MpiGrid2D(int argc, char** argv, MPI_Comm comm)
@@ -64,6 +70,8 @@ MpiGrid2D::MpiGrid2D(int argc, char** argv, MPI_Comm comm)
   MPI_Dims_create(size_, 2, dims_);
   MPI_Cart_create(MPI_COMM_WORLD, 2, dims_, periods_, 1, &comm_);
   MPI_Cart_coords(comm_, rank_, 2, coords_);
+  MPI_Cart_shift(comm_, 0, 1, &neighbors_[0], &neighbors_[1]);
+  MPI_Cart_shift(comm_, 1, 1, &neighbors_[2], &neighbors_[3]);
 }
 
 MpiGrid2D::~MpiGrid2D() {
@@ -91,6 +99,22 @@ int MpiGrid2D::size() const {
 
 int MpiGrid2D::rank() const {
   return rank_;
+}
+
+int MpiGrid2D::left() const {
+  return neighbors_[0];
+}
+
+int MpiGrid2D::right() const {
+  return neighbors_[1];
+}
+
+int MpiGrid2D::top() const {
+  return neighbors_[2];
+}
+
+int MpiGrid2D::bot() const {
+  return neighbors_[3];
 }
 
 int MpiGrid2D::rows() const {
