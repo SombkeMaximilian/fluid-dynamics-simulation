@@ -120,12 +120,12 @@ fluid_dynamics::Bound<double> CreateBound(size_t L) {
 
 int main() {
   size_t L = 102;
-  fluid_dynamics::Grid<double> grid(L);
+  fluid_dynamics::Grid<double> grid;
   fluid_dynamics::Grid<std::pair<double, double>> grad(L), velocities(L);
   fluid_dynamics::Bound<double> bound = CreateBound(L);
   fluid_dynamics::Solver<double> solver(1e-2, 10000);
 
-  grid = solver.Solve(grid, bound);
+  grid = solver.Solve(L, L, bound);
   grad = solver.Gradient(grid);
 
   for (size_t i = 1; i < L - 1; ++i) {

@@ -44,12 +44,12 @@ void Solver<T>::source(std::function<T(size_t, size_t)> source) {
 }
 
 template<typename T>
-Grid<T> Solver<T>::Solve(const Grid<T>& initial, const Bound<T>& bound) {
-  Grid<T> prev{initial};
-  Grid<T> curr{initial.rows(), initial.cols()};
+Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound) {
+  Grid<T> prev{rows, cols};
+  Grid<T> curr{rows, cols};
 
-  for (size_t i = 0; i < initial.cols(); ++i) {
-    for (size_t j = 0; j < initial.rows(); ++j) {
+  for (size_t i = 0; i < prev.rows(); ++i) {
+    for (size_t j = 0; j < prev.cols(); ++j) {
       prev(i, j) = source_(i, j);
     }
   }

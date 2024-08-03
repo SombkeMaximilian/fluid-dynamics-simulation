@@ -7,6 +7,7 @@
 #include <functional>
 #include "grid.h"
 #include "bound.h"
+#include "mpi_util.h"
 
 namespace fluid_dynamics {
 
@@ -32,7 +33,7 @@ class Solver {
   void norm(std::function<T(const Grid<T>&, const Grid<T>&)> norm);
   void source(std::function<T(size_t, size_t)> source);
 
-  Grid<T> Solve(const Grid<T>& initial, const Bound<T>& bound);
+  Grid<T> Solve(size_t rows, size_t cols, const Bound<T>& bound);
   Grid<std::pair<T, T>> Gradient(const Grid<T>& field);
 
  private:
