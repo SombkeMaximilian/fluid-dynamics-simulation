@@ -49,6 +49,9 @@ class MpiGrid2D {
   void FreeBoundaryColType();
   void FreeBoundaryTypes();
 
+  size_t GlobalRow(size_t i, size_t data_cols) const;
+  size_t GlobalCol(size_t j, size_t data_rows) const;
+
  private:
   MPI_Comm comm_;
   int initialized_;

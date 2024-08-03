@@ -189,6 +189,14 @@ void MpiGrid2D::FreeBoundaryTypes() {
   FreeBoundaryColType();
 }
 
+size_t MpiGrid2D::GlobalRow(size_t i, size_t data_cols) const {
+  return coords_[1] * data_cols + i;
+}
+
+size_t MpiGrid2D::GlobalCol(size_t j, size_t data_rows) const {
+  return coords_[0] * data_rows + j;
+}
+
 void MpiGrid2D::CreateRowType(int count, MPI_Datatype type) {
   MPI_Type_contiguous(count, type, &boundary_row_);
   MPI_Type_commit(&boundary_row_);
