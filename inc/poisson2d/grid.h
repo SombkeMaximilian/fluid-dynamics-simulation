@@ -35,7 +35,7 @@ class Grid {
   T& operator()(size_t i, size_t j);
   const T& operator()(size_t i, size_t j) const;
 
-  void Resize(size_t rows, size_t cols, std::pair<size_t, size_t> offset);
+  void Resize(size_t rows, size_t cols, std::pair<int, int> offset);
   void Resize(size_t rows, size_t cols);
 
   void Fill(T value);

@@ -58,13 +58,13 @@ const T& Grid<T>::operator()(size_t i, size_t j) const {
 }
 
 template<typename T>
-void Grid<T>::Resize(size_t rows, size_t cols, std::pair<size_t, size_t> offset) {
+void Grid<T>::Resize(size_t rows, size_t cols, std::pair<int, int> offset) {
   std::vector<T> new_data(rows * cols);
 
   for (size_t i = 0; i < rows; ++i) {
     for (size_t j = 0; j < cols; ++j) {
-      if (i < offset.first || i >= offset.first + cols_
-          || j < offset.second || j >= offset.second + rows_) {
+      if (static_cast<int>(i) < offset.first || static_cast<int>(i) >= offset.first + cols_
+          || static_cast<int>(j) < offset.second || static_cast<int>(j) >= offset.second + rows_) {
         new_data[i * cols + j] = T{};
       } else {
         new_data[i * cols + j] = data_[(i - offset.first) * cols_ + j - offset.second];
