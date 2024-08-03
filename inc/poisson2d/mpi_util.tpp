@@ -5,7 +5,8 @@ namespace fluid_dynamics {
 MpiGrid2D::MpiGrid2D()
     : comm_{MPI_COMM_WORLD}, initialized_{-1}, finalized_{-1}, rank_{0}, size_{0},
       neighbors_{0, 0, 0, 0}, dims_{0, 0},
-      periods_{0, 0}, coords_{0, 0} {
+      periods_{0, 0}, coords_{0, 0},
+      boundary_row_{MPI_DATATYPE_NULL}, boundary_col_{MPI_DATATYPE_NULL} {
   MPI_Initialized(&initialized_);
   if (!initialized_) {
     MPI_Init(nullptr, nullptr);
@@ -23,7 +24,8 @@ MpiGrid2D::MpiGrid2D()
 MpiGrid2D::MpiGrid2D(MPI_Comm comm)
     : comm_{comm}, initialized_{-1}, finalized_{-1}, rank_{0}, size_{0},
       neighbors_{0, 0, 0, 0}, dims_{0, 0},
-      periods_{0, 0}, coords_{0, 0} {
+      periods_{0, 0}, coords_{0, 0},
+      boundary_row_{MPI_DATATYPE_NULL}, boundary_col_{MPI_DATATYPE_NULL} {
   MPI_Initialized(&initialized_);
   if (!initialized_) {
     MPI_Init(nullptr, nullptr);
@@ -41,7 +43,8 @@ MpiGrid2D::MpiGrid2D(MPI_Comm comm)
 MpiGrid2D::MpiGrid2D(int argc, char** argv)
     : comm_{MPI_COMM_WORLD}, initialized_{-1}, finalized_{-1}, rank_{0}, size_{0},
       neighbors_{0, 0, 0, 0}, dims_{0, 0},
-      periods_{0, 0}, coords_{0, 0} {
+      periods_{0, 0}, coords_{0, 0},
+      boundary_row_{MPI_DATATYPE_NULL}, boundary_col_{MPI_DATATYPE_NULL} {
   MPI_Initialized(&initialized_);
   if (!initialized_) {
     MPI_Init(&argc, &argv);
@@ -59,7 +62,8 @@ MpiGrid2D::MpiGrid2D(int argc, char** argv)
 MpiGrid2D::MpiGrid2D(int argc, char** argv, MPI_Comm comm)
     : comm_{comm}, initialized_{-1}, finalized_{-1}, rank_{0}, size_{0},
       neighbors_{0, 0, 0, 0}, dims_{0, 0},
-      periods_{0, 0}, coords_{0, 0} {
+      periods_{0, 0}, coords_{0, 0},
+      boundary_row_{MPI_DATATYPE_NULL}, boundary_col_{MPI_DATATYPE_NULL} {
   MPI_Initialized(&initialized_);
   if (!initialized_) {
     MPI_Init(&argc, &argv);
@@ -135,6 +139,64 @@ const int* MpiGrid2D::periods() const {
 
 const int* MpiGrid2D::coords() const {
   return coords_;
+}
+
+MPI_Datatype MpiGrid2D::boundary_row() const {
+  return boundary_row_;
+}
+
+MPI_Datatype MpiGrid2D::boundary_col() const {
+  return boundary_col_;
+}
+
+void MpiGrid2D::boundary_row(MPI_Datatype boundary_row) {
+  boundary_row_ = boundary_row;
+}
+
+void MpiGrid2D::boundary_col(MPI_Datatype boundary_col) {
+  boundary_col_ = boundary_col;
+}
+
+void MpiGrid2D::CreateBoundaryRowType(size_t cols, MPI_Datatype type) {
+  CreateRowType(static_cast<int>(cols), type);
+}
+
+void MpiGrid2D::CreateBoundaryColType(size_t rows, size_t cols, MPI_Datatype type) {
+  CreateColType(static_cast<int>(rows), static_cast<int>(cols), type);
+}
+
+void MpiGrid2D::CreateBoundaryTypes(size_t rows, size_t cols, MPI_Datatype type) {
+  CreateRowType(static_cast<int>(cols), type);
+  CreateColType(static_cast<int>(rows), static_cast<int>(cols), type);
+}
+
+void MpiGrid2D::FreeBoundaryRowType() {
+  if (boundary_row_ != MPI_DATATYPE_NULL) {
+    MPI_Type_free(&boundary_row_);
+    boundary_row_ = MPI_DATATYPE_NULL;
+  }
+}
+
+void MpiGrid2D::FreeBoundaryColType() {
+  if (boundary_col_ != MPI_DATATYPE_NULL) {
+    MPI_Type_free(&boundary_col_);
+    boundary_col_ = MPI_DATATYPE_NULL;
+  }
+}
+
+void MpiGrid2D::FreeBoundaryTypes() {
+  FreeBoundaryRowType();
+  FreeBoundaryColType();
+}
+
+void MpiGrid2D::CreateRowType(int count, MPI_Datatype type) {
+  MPI_Type_contiguous(count, type, &boundary_row_);
+  MPI_Type_commit(&boundary_row_);
+}
+
+void MpiGrid2D::CreateColType(int count, int stride, MPI_Datatype type) {
+  MPI_Type_vector(count, 1, stride, type, &boundary_col_);
+  MPI_Type_commit(&boundary_col_);
 }
 
 template<typename T>
