@@ -65,6 +65,46 @@ Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound) {
 }
 
 template<typename T>
+Grid<T> Solver<T>::SolveMpi(size_t rows, size_t cols, Bound<T>& global_bound, MpiGrid2D& mpi_grid) {
+  Grid<T> prev{rows, cols};
+  Grid<T> curr{rows, cols};
+  Bound<T> local_bound{LocalBoundaries(global_bound, rows, cols, mpi_grid)};
+  size_t origin_row = mpi_grid.GlobalRow(0, prev.rows());
+  size_t origin_col = mpi_grid.GlobalCol(0, prev.cols());
+  T local_norm, global_norm;
+
+  for (size_t i = 0; i < prev.rows(); ++i) {
+    for (size_t j = 0; j < prev.cols(); ++j) {
+      prev(i, j) = source_(origin_row + i, origin_col + j);
+    }
+  }
+
+  mpi_grid.CreateRowType(prev.cols(), GetMpiType<T>());
+  mpi_grid.CreateColType(prev.rows(), prev.cols() + 2, GetMpiType<T>());
+  prev.Resize(prev.rows() + 2, prev.cols() + 2, {1, 1});
+  curr.Resize(curr.rows() + 2, curr.cols() + 2, {1, 1});
+
+  for (size_t iter = 0; iter < max_iter_; ++iter) {
+    ExchangeBoundaryData(prev, mpi_grid);
+    curr = UpdateMpi(prev, local_bound, mpi_grid);
+
+    local_norm = norm_(prev, curr, true);
+    MPI_Allreduce(&local_norm, &global_norm, 1, GetMpiType<T>(), MPI_SUM, mpi_grid.comm());
+    if (global_norm < epsilon_) {
+      break;
+    }
+
+    prev = curr;
+  }
+
+  curr.Resize(curr.rows() - 2, curr.cols() - 2, {-1, -1});
+
+  mpi_grid.FreeTypes();
+
+  return curr;
+}
+
+template<typename T>
 Grid<std::pair<T, T>> Solver<T>::Gradient(const Grid<T>& field) {
   Grid<std::pair<T, T>> grad{field.rows(), field.cols()};
 

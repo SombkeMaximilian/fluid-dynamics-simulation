@@ -34,6 +34,7 @@ class Solver {
   void source(std::function<T(size_t, size_t)> source);
 
   Grid<T> Solve(size_t rows, size_t cols, const Bound<T>& bound);
+  Grid<T> SolveMpi(size_t rows, size_t cols, Bound<T>& global_bound, MpiGrid2D& mpi_grid);
   Grid<std::pair<T, T>> Gradient(const Grid<T>& field);
 
  private:
