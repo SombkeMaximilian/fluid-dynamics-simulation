@@ -51,6 +51,7 @@ class Solver {
   Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
 
   Bound<T> LocalBoundaries(const Bound<T>& global_bound, size_t rows, size_t cols, MpiGrid2D& mpi_grid);
+  bool TestBoundary(const Boundary<T>& boundary, size_t rows, size_t cols, MpiGrid2D& mpi_grid);
 }; // class Solver
 
 } // namespace fluid_dynamics

@@ -123,23 +123,29 @@ Grid<T> Solver<T>::Update(const Grid<T>& prev, const Bound<T>& bound) {
 template<typename T>
 Bound<T> Solver<T>::LocalBoundaries(const Bound<T>& global_bound, size_t rows, size_t cols, MpiGrid2D& mpi_grid) {
   Bound<T> local_bound(global_bound.type());
+
+  for (auto &b : global_bound.boundaries()) {
+    if (TestBoundary(b, rows, cols, mpi_grid)) {
+      local_bound.AddBoundary(b);
+    }
+  }
+
+  return local_bound;
+}
+
+template<typename T>
+bool Solver<T>::TestBoundary(const Boundary<T>& boundary, size_t rows, size_t cols, MpiGrid2D& mpi_grid) {
   size_t origin_row = mpi_grid.GlobalRow(0, cols);
   size_t origin_col = mpi_grid.GlobalCol(0, rows);
-  std::vector<bool> boundary_present(global_bound.size());
-  bool condition;
 
   for (size_t i = 0; i < rows; ++i) {
     for (size_t j = 0; j < cols; ++j) {
-      for (size_t b = 0; b < global_bound.size(); ++b) {
-        condition = global_bound.boundaries()[b].condition(origin_row + i, origin_col + j) != 0;
-        if (!boundary_present[b] || condition) {
-          local_bound.AddBoundary(global_bound.boundaries()[b]);
-          boundary_present[b] = true;
-          break;
-        }
+      if (boundary.condition(origin_row + i, origin_col + j)) {
+        return true;
       }
     }
   }
+  return false;
 }
 
 } // namespace fluid_dynamics
