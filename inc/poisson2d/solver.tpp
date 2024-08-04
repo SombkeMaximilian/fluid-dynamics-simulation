@@ -125,6 +125,33 @@ Grid<T> Solver<T>::Update(const Grid<T>& prev, const Bound<T>& bound) {
 }
 
 template<typename T>
+Grid<T> Solver<T>::UpdateMpi(const Grid<T>& prev, Bound<T>& local_bound, MpiGrid2D& mpi_grid) {
+  Grid<T> next{prev.rows(), prev.cols()};
+  size_t origin_row = mpi_grid.GlobalRow(0, prev.rows() - 2);
+  size_t origin_col = mpi_grid.GlobalCol(0, prev.cols() - 2);
+  bool is_boundary = false;
+
+  for (size_t i = 1; i < prev.rows() - 1; ++i) {
+    for (size_t j = 1; j < prev.cols() - 1; ++j) {
+      for (auto boundary : local_bound.boundaries()) {
+        if (boundary.condition(origin_row + i - 1, origin_col + j - 1)) {
+          next(i, j) = boundary.value(origin_row + i - 1, origin_col + j - 1);
+          is_boundary = true;
+          break;
+        }
+      }
+      if (!is_boundary) {
+        next(i, j) = 0.25 * (prev(i - 1, j) + prev(i + 1, j) + prev(i, j - 1) + prev(i, j + 1)
+                             + source_(origin_row + i - 1, origin_col + j - 1));
+      }
+      is_boundary = false;
+    }
+  }
+
+  return next;
+}
+
+template<typename T>
 Bound<T> Solver<T>::LocalBoundaries(const Bound<T>& global_bound, size_t rows, size_t cols, MpiGrid2D& mpi_grid) {
   Bound<T> local_bound(global_bound.type());
 

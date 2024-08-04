@@ -49,6 +49,7 @@ class Solver {
   static T DefaultSource(size_t, size_t);
 
   Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
+  Grid<T> UpdateMpi(const Grid<T>& prev, Bound<T>& local_bound, MpiGrid2D& mpi_grid);
 
   Bound<T> LocalBoundaries(const Bound<T>& global_bound, size_t rows, size_t cols, MpiGrid2D& mpi_grid);
   bool TestBoundary(const Boundary<T>& boundary, size_t rows, size_t cols, MpiGrid2D& mpi_grid);
