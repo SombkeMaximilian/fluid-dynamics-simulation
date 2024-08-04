@@ -69,6 +69,25 @@ Grid<std::pair<T, T>> SolverMpi<T>::Gradient(const Grid<T>& field, MpiGrid2D& mp
 }
 
 template<typename T>
+Grid<std::pair<T, T>> SolverMpi<T>::Velocity(const Grid<std::pair<T, T>>& grad) {
+  Grid<std::pair<T, T>> velocity{grad.rows(), grad.cols()};
+
+  for (size_t i = 0; i < grad.rows(); ++i) {
+    for (size_t j = 0; j < grad.cols(); ++j) {
+      velocity(i, j).first = grad(i, j).second;
+      if (grad(i, j).first != 0) {
+        velocity(i, j).second = -grad(i, j).first;
+      } else {
+        velocity(i, j).second = 0;
+      }
+    }
+  }
+
+  return velocity;
+}
+
+
+template<typename T>
 Grid<T> SolverMpi<T>::Update(const Grid<T>& prev, Bound<T>& local_bound, MpiGrid2D& mpi_grid) {
   Grid<T> next{prev.rows(), prev.cols()};
   size_t origin_row = mpi_grid.GlobalRow(0, prev.rows() - 2);
