@@ -225,6 +225,42 @@ size_t MpiGrid2D::LocalCols(size_t global_cols) const {
 }
 
 template<typename T>
+void WriteGridBinary(Grid<T>& grid, const std::string& filename, MpiGrid2D& mpi_grid) {
+  MPI_File file;
+  MPI_Offset file_size = mpi_grid.rows() * grid.rows() * mpi_grid.cols() * grid.cols() * sizeof(T);
+  MPI_Offset row_size = grid.cols() * sizeof(T);
+  MPI_Offset row_offset = 0;
+  int mode = MPI_MODE_CREATE | MPI_MODE_WRONLY;
+
+  mpi_grid.CreateRowType(grid.cols(), GetMpiType<T>());
+  MPI_File_open(mpi_grid.comm(), filename.c_str(), mode, MPI_INFO_NULL, &file);
+  MPI_File_set_size(file, file_size);
+
+  for (size_t i = 0; i < grid.rows(); ++i) {
+    row_offset = (i + mpi_grid.row() * grid.rows()) * mpi_grid.cols() + mpi_grid.col();
+    MPI_File_write_at(file, row_offset * row_size, grid.data(i, 0), 1,
+                      mpi_grid.row_type(), MPI_STATUS_IGNORE);
+  }
+
+  MPI_File_close(&file);
+  mpi_grid.FreeRowType();
+}
+
+template<typename T>
+void WriteGridBinary(Grid<std::pair<T, T>>& grid, const std::string& filename, MpiGrid2D& mpi_grid) {
+  Grid<T> unpaired_grid{grid.rows(), 2 * grid.cols()};
+
+  for (size_t i = 0; i < grid.rows(); ++i) {
+    for (size_t j = 0; j < grid.cols(); ++j) {
+      unpaired_grid(i, 2 * j) = grid(i, j).first;
+      unpaired_grid(i, 2 * j + 1) = grid(i, j).second;
+    }
+  }
+
+  WriteGridBinary(unpaired_grid, filename, mpi_grid);
+}
+
+template<typename T>
 static inline MPI_Datatype GetMpiType() {
   MPI_Datatype mpi_type = MPI_DATATYPE_NULL;
 

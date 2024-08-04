@@ -3,8 +3,10 @@
 #define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_MPI_UTIL_H_
 
 #include <complex>
+#include <utility>
 #include <type_traits>
 #include <mpi.h>
+#include "grid.h"
 
 namespace fluid_dynamics {
 
@@ -70,6 +72,9 @@ class MpiGrid2D {
   MPI_Datatype row_type_;
   MPI_Datatype col_type_;
 }; // class MpiGrid2D
+
+template<typename T> void WriteGridBinary(Grid<T>& grid, const std::string& filename, MpiGrid2D& mpi_grid);
+template<typename T> void WriteGridBinary(Grid<std::pair<T, T>>& grid, const std::string& filename, MpiGrid2D& mpi_grid);
 
 template<typename T> static inline MPI_Datatype GetMpiType();
 
