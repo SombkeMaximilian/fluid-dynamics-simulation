@@ -71,7 +71,7 @@ Grid<std::pair<T, T>> Solver<T>::Gradient(const Grid<T>& field) {
   for (size_t i = 1; i < field.rows() - 1; ++i) {
     for (size_t j = 1; j < field.cols() - 1; ++j) {
       grad(i, j).first = (field(i, j + 1) - field(i, j - 1)) / 2;
-      grad(i, j).second = (field(i + 1, j) - field(i - 1,j)) / 2;
+      grad(i, j).second = (field(i + 1, j) - field(i - 1, j)) / 2;
     }
   }
 
