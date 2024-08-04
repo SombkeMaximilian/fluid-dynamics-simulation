@@ -189,12 +189,12 @@ void MpiGrid2D::FreeBoundaryTypes() {
   FreeBoundaryColType();
 }
 
-size_t MpiGrid2D::GlobalRow(size_t i, size_t data_cols) const {
-  return coords_[1] * data_cols + i;
+size_t MpiGrid2D::GlobalRow(size_t i, size_t data_rows) const {
+  return coords_[1] * data_rows + i;
 }
 
-size_t MpiGrid2D::GlobalCol(size_t j, size_t data_rows) const {
-  return coords_[0] * data_rows + j;
+size_t MpiGrid2D::GlobalCol(size_t j, size_t data_cols) const {
+  return coords_[0] * data_cols + j;
 }
 
 size_t MpiGrid2D::LocalRows(size_t global_rows) const {
