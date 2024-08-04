@@ -13,7 +13,6 @@ set(SERIAL_SOURCE_FILES
     examples/serial/main.cpp
 )
 add_executable(FDSimSerial ${SERIAL_SOURCE_FILES})
-target_link_libraries(FDSimSerial MPI::MPI_CXX)
 
 set(MPI_SOURCE_FILES
     examples/mpi/main.cpp
