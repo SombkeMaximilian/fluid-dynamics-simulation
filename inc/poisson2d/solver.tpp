@@ -44,7 +44,7 @@ void Solver<T>::max_iter(size_t max_iter) {
 }
 
 template<typename T>
-void Solver<T>::norm(std::function<T(const Grid<T>&, const Grid<T>&)> norm) {
+void Solver<T>::norm(std::function<T(const Grid<T>&, const Grid<T>&, bool)> norm) {
   norm_ = norm;
 }
 
