@@ -139,7 +139,8 @@ int main() {
     }
   }
 
-  fluid_dynamics::WriteGridBinary(velocities, "vec.bin");
-  fluid_dynamics::WriteGridText(velocities, "vec.txt");
+  WriteGridText(grid, "phi.txt");
+  WriteGridBinary(velocities, "vec.bin");
+  WriteGridText(velocities, "vec.txt");
   return 0;
 }

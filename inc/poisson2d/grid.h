@@ -2,7 +2,6 @@
 #ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_GRID_H_
 #define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_GRID_H_
 
-#include <fstream>
 #include <utility>
 #include <vector>
 #include <functional>
@@ -42,11 +41,6 @@ class Grid {
   void Fill(const std::vector<T>& values);
   void Fill(std::vector<T>&& values);
   void Fill(std::function<T(size_t, size_t)> value_func);
-
-  template<typename U> friend void WriteGridBinary(const Grid<U>& grid, const std::string& filename);
-  template<typename U> friend void WriteGridBinary(const Grid<std::pair<U, U>>& grid, const std::string& filename);
-  template<typename U> friend void WriteGridText(const Grid<U>& grid, const std::string& filename);
-  template<typename U> friend void WriteGridText(const Grid<std::pair<U, U>>& grid, const std::string& filename);
 
  private:
   std::vector<T> data_;
