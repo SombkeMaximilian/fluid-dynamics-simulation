@@ -2,49 +2,7 @@
 namespace fluid_dynamics {
 
 template<typename T>
-Solver<T>::Solver() : epsilon_{kDefaultEpsilon}, max_iter_{kDefaultMaxIter}, norm_{DefaultNorm}, source_{DefaultSource} {}
-
-template<typename T>
-Solver<T>::Solver(T epsilon) : epsilon_{epsilon}, max_iter_{kDefaultMaxIter}, norm_{DefaultNorm}, source_{DefaultSource} {}
-
-template<typename T>
-Solver<T>::Solver(size_t max_iter) : epsilon_{kDefaultEpsilon}, max_iter_{max_iter}, norm_{DefaultNorm}, source_{DefaultSource} {}
-
-template<typename T>
-Solver<T>::Solver(T epsilon, size_t max_iter) : epsilon_{epsilon}, max_iter_{max_iter}, norm_{DefaultNorm}, source_{DefaultSource} {}
-
-template<typename T>
-T Solver<T>::epsilon() const {
-  return epsilon_;
-}
-
-template<typename T>
-size_t Solver<T>::max_iter() const {
-  return max_iter_;
-}
-
-template<typename T>
-void Solver<T>::epsilon(T epsilon) {
-  epsilon_ = epsilon;
-}
-
-template<typename T>
-void Solver<T>::max_iter(size_t max_iter) {
-  max_iter_ = max_iter;
-}
-
-template<typename T>
-void Solver<T>::norm(std::function<T(const Grid<T>&, const Grid<T>&)> norm) {
-  norm_ = norm;
-}
-
-template<typename T>
-void Solver<T>::source(std::function<T(size_t, size_t)> source) {
-  source_ = source;
-}
-
-template<typename T>
-Grid<T> Solver<T>::SolveMpi(size_t rows, size_t cols, Bound<T>& global_bound, MpiGrid2D& mpi_grid) {
+Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, MpiGrid2D& mpi_grid) {
   Grid<T> prev{rows, cols};
   Grid<T> curr{rows, cols};
   Bound<T> local_bound{LocalBoundaries(global_bound, rows, cols, mpi_grid)};
@@ -54,7 +12,7 @@ Grid<T> Solver<T>::SolveMpi(size_t rows, size_t cols, Bound<T>& global_bound, Mp
 
   for (size_t i = 0; i < prev.rows(); ++i) {
     for (size_t j = 0; j < prev.cols(); ++j) {
-      prev(i, j) = source_(origin_row + i, origin_col + j);
+      prev(i, j) = Solver<T>::source(origin_row + i, origin_col + j);
     }
   }
 
@@ -63,13 +21,13 @@ Grid<T> Solver<T>::SolveMpi(size_t rows, size_t cols, Bound<T>& global_bound, Mp
   prev.Resize(prev.rows() + 2, prev.cols() + 2, {1, 1});
   curr.Resize(curr.rows() + 2, curr.cols() + 2, {1, 1});
 
-  for (size_t iter = 0; iter < max_iter_; ++iter) {
+  for (size_t iter = 0; iter < Solver<T>::max_iter(); ++iter) {
     ExchangeBoundaryData(prev, mpi_grid);
-    curr = UpdateMpi(prev, local_bound, mpi_grid);
+    curr = Update(prev, local_bound, mpi_grid);
 
-    local_norm = norm_(prev, curr, true);
+    local_norm = Solver<T>::norm(prev, curr, true);
     MPI_Allreduce(&local_norm, &global_norm, 1, GetMpiType<T>(), MPI_SUM, mpi_grid.comm());
-    if (global_norm < epsilon_) {
+    if (global_norm < Solver<T>::epsilon()) {
       break;
     }
 
@@ -84,7 +42,7 @@ Grid<T> Solver<T>::SolveMpi(size_t rows, size_t cols, Bound<T>& global_bound, Mp
 }
 
 template<typename T>
-Grid<std::pair<T, T>> Solver<T>::GradientMpi(const Grid<T>& field, MpiGrid2D& mpi_grid) {
+Grid<std::pair<T, T>> SolverMpi<T>::Gradient(const Grid<T>& field, MpiGrid2D& mpi_grid) {
   Grid<T> expanded_field{field};
   Grid<std::pair<T, T>> grad{field.rows(), field.cols()};
   size_t origin_row = mpi_grid.GlobalRow(0, field.rows());
@@ -113,29 +71,7 @@ Grid<std::pair<T, T>> Solver<T>::GradientMpi(const Grid<T>& field, MpiGrid2D& mp
 }
 
 template<typename T>
-T Solver<T>::DefaultNorm(const Grid<T>& prev, const Grid<T>& curr, bool exclude_boundaries) {
-  T norm = 0;
-  size_t start_row = exclude_boundaries ? 1 : 0;
-  size_t start_col = exclude_boundaries ? 1 : 0;
-  size_t end_row = exclude_boundaries ? prev.rows() - 1 : prev.rows();
-  size_t end_col = exclude_boundaries ? prev.cols() - 1 : prev.cols();
-
-  for (size_t i = start_row; i < end_row; ++i) {
-    for (size_t j = start_col; j < end_col; ++j) {
-      norm += (prev(i, j) - curr(i, j)) * (prev(i, j) - curr(i, j));
-    }
-  }
-
-  return sqrt(norm);
-}
-
-template<typename T>
-T Solver<T>::DefaultSource(size_t, size_t) {
-  return 0;
-}
-
-template<typename T>
-Grid<T> Solver<T>::UpdateMpi(const Grid<T>& prev, Bound<T>& local_bound, MpiGrid2D& mpi_grid) {
+Grid<T> SolverMpi<T>::Update(const Grid<T>& prev, Bound<T>& local_bound, MpiGrid2D& mpi_grid) {
   Grid<T> next{prev.rows(), prev.cols()};
   size_t origin_row = mpi_grid.GlobalRow(0, prev.rows() - 2);
   size_t origin_col = mpi_grid.GlobalCol(0, prev.cols() - 2);
@@ -152,7 +88,7 @@ Grid<T> Solver<T>::UpdateMpi(const Grid<T>& prev, Bound<T>& local_bound, MpiGrid
       }
       if (!is_boundary) {
         next(i, j) = 0.25 * (prev(i - 1, j) + prev(i + 1, j) + prev(i, j - 1) + prev(i, j + 1)
-            + source_(origin_row + i - 1, origin_col + j - 1));
+                             + Solver<T>::source(origin_row + i - 1, origin_col + j - 1));
       }
       is_boundary = false;
     }
@@ -162,7 +98,7 @@ Grid<T> Solver<T>::UpdateMpi(const Grid<T>& prev, Bound<T>& local_bound, MpiGrid
 }
 
 template<typename T>
-Bound<T> Solver<T>::LocalBoundaries(const Bound<T>& global_bound, size_t rows, size_t cols, MpiGrid2D& mpi_grid) {
+Bound<T> SolverMpi<T>::LocalBoundaries(const Bound<T>& global_bound, size_t rows, size_t cols, MpiGrid2D& mpi_grid) {
   Bound<T> local_bound(global_bound.type());
 
   for (auto &b : global_bound.boundaries()) {
@@ -175,7 +111,7 @@ Bound<T> Solver<T>::LocalBoundaries(const Bound<T>& global_bound, size_t rows, s
 }
 
 template<typename T>
-bool Solver<T>::TestBoundary(const Boundary<T>& boundary, size_t rows, size_t cols, MpiGrid2D& mpi_grid) {
+bool SolverMpi<T>::TestBoundary(const Boundary<T>& boundary, size_t rows, size_t cols, MpiGrid2D& mpi_grid) {
   size_t origin_row = mpi_grid.GlobalRow(0, rows);
   size_t origin_col = mpi_grid.GlobalCol(0, cols);
 
@@ -190,7 +126,7 @@ bool Solver<T>::TestBoundary(const Boundary<T>& boundary, size_t rows, size_t co
 }
 
 template<typename T>
-void Solver<T>::ExchangeBoundaryData(Grid<T>& grid, MpiGrid2D& mpi_grid) {
+void SolverMpi<T>::ExchangeBoundaryData(Grid<T>& grid, MpiGrid2D& mpi_grid) {
   MPI_Sendrecv(grid.data(1, 1), 1, mpi_grid.row_type(), mpi_grid.top(), 0,
                grid.data(grid.rows() - 1, 1), 1, mpi_grid.row_type(), mpi_grid.bot(), 0,
                mpi_grid.comm(), MPI_STATUS_IGNORE);
