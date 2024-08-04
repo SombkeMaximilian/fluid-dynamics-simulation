@@ -63,8 +63,8 @@ void Grid<T>::Resize(size_t rows, size_t cols, std::pair<int, int> offset) {
 
   for (size_t i = 0; i < rows; ++i) {
     for (size_t j = 0; j < cols; ++j) {
-      if (static_cast<int>(i) < offset.first || static_cast<int>(i) >= offset.first + cols_
-          || static_cast<int>(j) < offset.second || static_cast<int>(j) >= offset.second + rows_) {
+      if (static_cast<int>(i) < offset.first || static_cast<int>(i) >= offset.first + rows_
+          || static_cast<int>(j) < offset.second || static_cast<int>(j) >= offset.second + cols_) {
         new_data[i * cols + j] = T{};
       } else {
         new_data[i * cols + j] = data_[(i - offset.first) * cols_ + j - offset.second];
