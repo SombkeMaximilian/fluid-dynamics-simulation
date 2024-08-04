@@ -117,7 +117,7 @@ Grid<T> Solver<T>::Update(const Grid<T>& prev, const Bound<T>& bound) {
 
   for (size_t i = 0; i < prev.rows(); ++i) {
     for (size_t j = 0; j < prev.cols(); ++j) {
-      for (auto boundary : bound.boundaries()) {
+      for (Boundary<T> boundary : bound.boundaries()) {
         if (boundary.condition(i, j)) {
           next(i, j) = boundary.value(i, j);
           is_boundary = true;

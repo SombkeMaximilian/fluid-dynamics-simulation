@@ -77,7 +77,7 @@ Grid<T> SolverMpi<T>::Update(const Grid<T>& prev, Bound<T>& local_bound, MpiGrid
 
   for (size_t i = 1; i < prev.rows() - 1; ++i) {
     for (size_t j = 1; j < prev.cols() - 1; ++j) {
-      for (auto boundary : local_bound.boundaries()) {
+      for (Boundary<T> boundary : local_bound.boundaries()) {
         if (boundary.condition(origin_row + i - 1, origin_col + j - 1)) {
           next(i, j) = boundary.value(origin_row + i - 1, origin_col + j - 1);
           is_boundary = true;
@@ -99,7 +99,7 @@ template<typename T>
 Bound<T> SolverMpi<T>::LocalBoundaries(const Bound<T>& global_bound, size_t rows, size_t cols, MpiGrid2D& mpi_grid) {
   Bound<T> local_bound(global_bound.type());
 
-  for (auto &b : global_bound.boundaries()) {
+  for (Boundary<T> b : global_bound.boundaries()) {
     if (TestBoundary(b, rows, cols, mpi_grid)) {
       local_bound.AddBoundary(b);
     }
