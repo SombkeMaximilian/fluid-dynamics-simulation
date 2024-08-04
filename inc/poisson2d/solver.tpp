@@ -24,6 +24,16 @@ size_t Solver<T>::max_iter() const {
 }
 
 template<typename T>
+T Solver<T>::norm(const Grid<T>& prev, const Grid<T>& curr, bool exclude_boundaries) {
+  return norm_(prev, curr, exclude_boundaries);
+}
+
+template<typename T>
+T Solver<T>::source(size_t i, size_t j) {
+  return source_(i, j);
+}
+
+template<typename T>
 void Solver<T>::epsilon(T epsilon) {
   epsilon_ = epsilon;
 }

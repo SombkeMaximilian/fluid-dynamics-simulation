@@ -26,6 +26,8 @@ class Solver {
 
   [[nodiscard]] T epsilon() const;
   [[nodiscard]] size_t max_iter() const;
+  T norm(const Grid<T>& prev, const Grid<T>& curr, bool exclude_boundaries = false);
+  T source(size_t i, size_t j);
 
   void epsilon(T epsilon);
   void max_iter(size_t max_iter);
