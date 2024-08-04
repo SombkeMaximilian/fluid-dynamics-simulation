@@ -111,7 +111,7 @@ Grid<T> Solver<T>::Update(const Grid<T>& prev, const Bound<T>& bound) {
         }
       }
       if (!is_boundary) {
-        next(i, j) = (prev(i - 1, j) + prev(i + 1, j) + prev(i, j - 1) + prev(i, j + 1) + source_(i, j)) / 4;
+        next(i, j) = 0.25 * (prev(i - 1, j) + prev(i + 1, j) + prev(i, j - 1) + prev(i, j + 1) + source_(i, j));
       }
       is_boundary = false;
     }
