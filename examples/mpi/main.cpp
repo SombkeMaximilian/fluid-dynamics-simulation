@@ -118,6 +118,25 @@ fluid_dynamics::Bound<double> CreateBound(size_t L) {
   return bound;
 }
 
+double ParallelNorm(const fluid_dynamics::Grid<double>& prev, const fluid_dynamics::Grid<double>& curr,
+                    bool exclude_boundaries) {
+  double norm = 0;
+  size_t start_row = exclude_boundaries ? 1 : 0;
+  size_t start_col = exclude_boundaries ? 1 : 0;
+  size_t end_row = exclude_boundaries ? prev.rows() - 1 : prev.rows();
+  size_t end_col = exclude_boundaries ? prev.cols() - 1 : prev.cols();
+
+  #pragma omp parallel for reduction(+:norm) default(none) collapse(2) \
+          shared(prev, curr, start_row, end_row, start_col, end_col)
+  for (size_t i = start_row; i < end_row; ++i) {
+    for (size_t j = start_col; j < end_col; ++j) {
+      norm += (prev(i, j) - curr(i, j)) * (prev(i, j) - curr(i, j));
+    }
+  }
+
+  return sqrt(norm);
+}
+
 int main() {
   fluid_dynamics::MpiGrid2D mpi_grid(MPI_COMM_WORLD);
   size_t L = 102;
@@ -127,6 +146,8 @@ int main() {
   fluid_dynamics::Grid<std::pair<double, double>> grad;
   fluid_dynamics::Bound<double> bound = CreateBound(L);
   fluid_dynamics::SolverMpi<double> solver(1e-2, 10000);
+
+  solver.norm(ParallelNorm);
 
   grid = solver.Solve(local_rows, local_cols, bound, mpi_grid);
   grad = solver.Gradient(grid, mpi_grid);
