@@ -55,7 +55,7 @@ Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound) {
   }
   for (size_t iter = 0; iter < max_iter_; ++iter) {
     curr = Update(prev, bound);
-    if (norm_(prev, curr) < epsilon_) {
+    if (norm_(prev, curr, false) < epsilon_) {
       break;
     }
     prev = curr;
@@ -79,11 +79,15 @@ Grid<std::pair<T, T>> Solver<T>::Gradient(const Grid<T>& field) {
 }
 
 template<typename T>
-T Solver<T>::DefaultNorm(const Grid<T>& prev, const Grid<T>& curr) {
+T Solver<T>::DefaultNorm(const Grid<T>& prev, const Grid<T>& curr, bool exclude_boundaries) {
   T norm = 0;
+  size_t start_row = exclude_boundaries ? 1 : 0;
+  size_t start_col = exclude_boundaries ? 1 : 0;
+  size_t end_row = exclude_boundaries ? prev.rows() - 1 : prev.rows();
+  size_t end_col = exclude_boundaries ? prev.cols() - 1 : prev.cols();
 
-  for (size_t i = 0; i < prev.rows(); ++i) {
-    for (size_t j = 0; j < prev.cols(); ++j) {
+  for (size_t i = start_row; i < end_row; ++i) {
+    for (size_t j = start_col; j < end_col; ++j) {
       norm += (prev(i, j) - curr(i, j)) * (prev(i, j) - curr(i, j));
     }
   }

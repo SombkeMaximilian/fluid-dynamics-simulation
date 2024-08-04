@@ -39,13 +39,13 @@ class Solver {
  private:
   T epsilon_;
   size_t max_iter_;
-  std::function<T(const Grid<T>&, const Grid<T>&)> norm_;
+  std::function<T(const Grid<T>&, const Grid<T>&, bool)> norm_;
   std::function<T(size_t, size_t)> source_;
 
   static constexpr T kDefaultEpsilon = static_cast<T>(1e-6);
   static constexpr size_t kDefaultMaxIter = 100;
 
-  static T DefaultNorm(const Grid<T>& prev, const Grid<T>& curr);
+  static T DefaultNorm(const Grid<T>& prev, const Grid<T>& curr, bool exclude_boundaries = false);
   static T DefaultSource(size_t, size_t);
 
   Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
