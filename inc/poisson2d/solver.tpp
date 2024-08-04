@@ -152,4 +152,20 @@ bool Solver<T>::TestBoundary(const Boundary<T>& boundary, size_t rows, size_t co
   return false;
 }
 
+template<typename T>
+void Solver<T>::ExchangeBoundaryData(Grid<T>& grid, MpiGrid2D& mpi_grid) {
+  MPI_Sendrecv(grid.data(1, 1), 1, mpi_grid.row_type(), mpi_grid.top(), 0,
+               grid.data(grid.rows() - 1, 1), 1, mpi_grid.row_type(), mpi_grid.bot(), 0,
+               mpi_grid.comm(), MPI_STATUS_IGNORE);
+  MPI_Sendrecv(grid.data(grid.rows() - 2, 1), 1, mpi_grid.row_type(), mpi_grid.bot(), 0,
+               grid.data(0, 1), 1, mpi_grid.row_type(), mpi_grid.top(), 0,
+               mpi_grid.comm(), MPI_STATUS_IGNORE);
+  MPI_Sendrecv(grid.data(1, 1), 1, mpi_grid.col_type(), mpi_grid.left(), 1,
+               grid.data(1, grid.cols() - 1), 1, mpi_grid.col_type(), mpi_grid.right(), 1,
+               mpi_grid.comm(), MPI_STATUS_IGNORE);
+  MPI_Sendrecv(grid.data(1, grid.cols() - 2), 1, mpi_grid.col_type(), mpi_grid.right(), 1,
+               grid.data(1, 0), 1, mpi_grid.col_type(), mpi_grid.left(), 1,
+               mpi_grid.comm(), MPI_STATUS_IGNORE);
+}
+
 } // namespace fluid_dynamics
