@@ -197,6 +197,22 @@ size_t MpiGrid2D::GlobalCol(size_t j, size_t data_rows) const {
   return coords_[0] * data_rows + j;
 }
 
+size_t MpiGrid2D::LocalRows(size_t global_rows) const {
+  if (global_rows % dims_[1] == 0) {
+    return global_rows / dims_[1];
+  } else {
+    throw std::runtime_error("Global rows is not divisible by the number of rows");
+  }
+}
+
+size_t MpiGrid2D::LocalCols(size_t global_cols) const {
+  if (global_cols % dims_[0] == 0) {
+    return global_cols / dims_[0];
+  } else {
+    throw std::runtime_error("Global cols is not divisible by the number of cols");
+  }
+}
+
 void MpiGrid2D::CreateRowType(int count, MPI_Datatype type) {
   MPI_Type_contiguous(count, type, &boundary_row_);
   MPI_Type_commit(&boundary_row_);
