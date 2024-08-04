@@ -121,6 +121,14 @@ int MpiGrid2D::bot() const {
   return neighbors_[3];
 }
 
+int MpiGrid2D::row() const {
+  return coords_[1];
+}
+
+int MpiGrid2D::col() const {
+  return coords_[0];
+}
+
 int MpiGrid2D::rows() const {
   return dims_[1];
 }
@@ -193,24 +201,24 @@ void MpiGrid2D::FreeTypes() {
 }
 
 size_t MpiGrid2D::GlobalRow(size_t i, size_t data_rows) const {
-  return coords_[1] * data_rows + i;
+  return row() * data_rows + i;
 }
 
 size_t MpiGrid2D::GlobalCol(size_t j, size_t data_cols) const {
-  return coords_[0] * data_cols + j;
+  return col() * data_cols + j;
 }
 
 size_t MpiGrid2D::LocalRows(size_t global_rows) const {
-  if (global_rows % dims_[1] == 0) {
-    return global_rows / dims_[1];
+  if (global_rows % rows() == 0) {
+    return global_rows / rows();
   } else {
     throw std::runtime_error("Global rows is not divisible by the number of rows");
   }
 }
 
 size_t MpiGrid2D::LocalCols(size_t global_cols) const {
-  if (global_cols % dims_[0] == 0) {
-    return global_cols / dims_[0];
+  if (global_cols % cols() == 0) {
+    return global_cols / cols();
   } else {
     throw std::runtime_error("Global cols is not divisible by the number of cols");
   }

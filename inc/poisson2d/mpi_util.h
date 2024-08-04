@@ -30,6 +30,8 @@ class MpiGrid2D {
   [[nodiscard]] int right() const;
   [[nodiscard]] int top() const;
   [[nodiscard]] int bot() const;
+  [[nodiscard]] int row() const;
+  [[nodiscard]] int col() const;
   [[nodiscard]] int rows() const;
   [[nodiscard]] int cols() const;
   [[nodiscard]] const int* dims() const;
