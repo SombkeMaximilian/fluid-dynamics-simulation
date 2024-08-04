@@ -139,7 +139,6 @@ int main() {
     }
   }
 
-  WriteGridText(grid, "phi.txt");
   WriteGridBinary(velocities, "vec.bin");
   WriteGridText(velocities, "vec.txt");
   return 0;
