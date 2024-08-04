@@ -45,12 +45,10 @@ template<typename T>
 Grid<std::pair<T, T>> SolverMpi<T>::Gradient(const Grid<T>& field, MpiGrid2D& mpi_grid) {
   Grid<T> expanded_field{field};
   Grid<std::pair<T, T>> grad{field.rows(), field.cols()};
-  size_t origin_row = mpi_grid.GlobalRow(0, field.rows());
-  size_t origin_col = mpi_grid.GlobalCol(0, field.cols());
-  size_t start_row = (origin_row == 0) ? 1 : 0;
-  size_t start_col = (origin_col == 0) ? 1 : 0;
-  size_t end_row = (origin_row == field.rows() * (mpi_grid.dims()[1] - 1)) ? field.rows() - 1 : field.rows();
-  size_t end_col = (origin_col == field.cols() * (mpi_grid.dims()[0] - 1)) ? field.cols() - 1 : field.cols();
+  size_t start_row = (mpi_grid.row() == 0) ? 1 : 0;
+  size_t start_col = (mpi_grid.col() == 0) ? 1 : 0;
+  size_t end_row = (mpi_grid.row() == mpi_grid.rows() - 1) ? field.rows() - 1 : field.rows();
+  size_t end_col = (mpi_grid.col() == mpi_grid.cols() - 1) ? field.cols() - 1 : field.cols();
 
   mpi_grid.CreateRowType(field.cols(), GetMpiType<T>());
   mpi_grid.CreateColType(field.rows(), field.cols() + 2, GetMpiType<T>());
