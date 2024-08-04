@@ -139,8 +139,8 @@ Bound<T> Solver<T>::LocalBoundaries(const Bound<T>& global_bound, size_t rows, s
 
 template<typename T>
 bool Solver<T>::TestBoundary(const Boundary<T>& boundary, size_t rows, size_t cols, MpiGrid2D& mpi_grid) {
-  size_t origin_row = mpi_grid.GlobalRow(0, cols);
-  size_t origin_col = mpi_grid.GlobalCol(0, rows);
+  size_t origin_row = mpi_grid.GlobalRow(0, rows);
+  size_t origin_col = mpi_grid.GlobalCol(0, cols);
 
   for (size_t i = 0; i < rows; ++i) {
     for (size_t j = 0; j < cols; ++j) {
