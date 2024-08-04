@@ -49,8 +49,8 @@ class MpiGrid2D {
   void FreeBoundaryColType();
   void FreeBoundaryTypes();
 
-  [[nodiscard]] size_t GlobalRow(size_t i, size_t data_cols) const;
-  [[nodiscard]] size_t GlobalCol(size_t j, size_t data_rows) const;
+  [[nodiscard]] size_t GlobalRow(size_t i, size_t data_rows) const;
+  [[nodiscard]] size_t GlobalCol(size_t j, size_t data_cols) const;
 
   [[nodiscard]] size_t LocalRows(size_t global_rows) const;
   [[nodiscard]] size_t LocalCols(size_t global_cols) const;
