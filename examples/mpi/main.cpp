@@ -126,7 +126,7 @@ int main() {
   fluid_dynamics::Grid<double> grid(local_rows, local_cols);
   fluid_dynamics::Grid<std::pair<double, double>> grad;
   fluid_dynamics::Bound<double> bound = CreateBound(L);
-  fluid_dynamics::SolverMpi<double> solver(1e-6, 10000);
+  fluid_dynamics::SolverMpi<double> solver(1e-2, 10000);
 
   grid = solver.Solve(local_rows, local_cols, bound, mpi_grid);
   grad = solver.Gradient(grid, mpi_grid);
