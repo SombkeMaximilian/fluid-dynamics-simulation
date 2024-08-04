@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(MPI REQUIRED)
+find_package(OpenMP REQUIRED)
 
 include_directories(inc)
 
@@ -18,7 +19,7 @@ set(MPI_SOURCE_FILES
     examples/mpi/main.cpp
 )
 add_executable(FDSimMPI ${MPI_SOURCE_FILES})
-target_link_libraries(FDSimMPI MPI::MPI_CXX)
+target_link_libraries(FDSimMPI MPI::MPI_CXX OpenMP::OpenMP_CXX)
 
 # Google Test setup
 include(FetchContent)
