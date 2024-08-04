@@ -89,6 +89,24 @@ Grid<std::pair<T, T>> Solver<T>::Gradient(const Grid<T>& field) {
 }
 
 template<typename T>
+Grid<std::pair<T, T>> Solver<T>::Velocity(const Grid<std::pair<T, T>>& grad) {
+  Grid<std::pair<T, T>> velocity{grad.rows(), grad.cols()};
+
+  for (size_t i = 0; i < grad.rows(); ++i) {
+    for (size_t j = 0; j < grad.cols(); ++j) {
+      velocity(i, j).first = grad(i, j).second;
+      if (grad(i, j).first != static_cast<T>(0)) {
+        velocity(i, j).second = -grad(i, j).first;
+      } else {
+        velocity(i, j).second = static_cast<T>(0);
+      }
+    }
+  }
+
+  return velocity;
+}
+
+template<typename T>
 T Solver<T>::DefaultNorm(const Grid<T>& prev, const Grid<T>& curr, bool exclude_boundaries) {
   T norm = 0;
   size_t start_row = exclude_boundaries ? 1 : 0;

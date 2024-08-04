@@ -36,6 +36,7 @@ class Solver {
 
   Grid<T> Solve(size_t rows, size_t cols, const Bound<T>& bound);
   Grid<std::pair<T, T>> Gradient(const Grid<T>& field);
+  virtual Grid<std::pair<T, T>> Velocity(const Grid<std::pair<T, T>>& grad);
 
  private:
   T epsilon_;
