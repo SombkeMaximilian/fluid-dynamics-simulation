@@ -10,6 +10,7 @@ Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, Mp
   size_t origin_col = mpi_grid.GlobalCol(0, prev.cols());
   T local_norm, global_norm;
 
+  #pragma omp parallel for default(none) collapse(2) shared(prev, origin_row, origin_col)
   for (size_t i = 0; i < prev.rows(); ++i) {
     for (size_t j = 0; j < prev.cols(); ++j) {
       prev(i, j) = Solver<T>::source(origin_row + i, origin_col + j);
@@ -56,6 +57,8 @@ Grid<std::pair<T, T>> SolverMpi<T>::Gradient(const Grid<T>& field, MpiGrid2D& mp
 
   ExchangeBoundaryData(expanded_field, mpi_grid);
 
+  #pragma omp parallel for default(none) collapse(2) \
+          shared(expanded_field, grad, start_row, end_row, start_col, end_col)
   for (size_t i = start_row; i < end_row; ++i) {
     for (size_t j = start_col; j < end_col; ++j) {
       grad(i, j).first = (expanded_field(i + 1, j + 2) - expanded_field(i + 1, j)) / 2;
@@ -72,6 +75,7 @@ template<typename T>
 Grid<std::pair<T, T>> SolverMpi<T>::Velocity(const Grid<std::pair<T, T>>& grad) {
   Grid<std::pair<T, T>> velocity{grad.rows(), grad.cols()};
 
+  #pragma omp parallel for default(none) collapse(2) shared(grad, velocity)
   for (size_t i = 0; i < grad.rows(); ++i) {
     for (size_t j = 0; j < grad.cols(); ++j) {
       velocity(i, j).first = grad(i, j).second;

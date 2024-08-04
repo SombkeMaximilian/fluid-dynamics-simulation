@@ -250,6 +250,7 @@ template<typename T>
 void WriteGridBinary(Grid<std::pair<T, T>>& grid, const std::string& filename, MpiGrid2D& mpi_grid) {
   Grid<T> unpaired_grid{grid.rows(), 2 * grid.cols()};
 
+  #pragma omp parallel for default(none) collapse(2) shared(grid, unpaired_grid)
   for (size_t i = 0; i < grid.rows(); ++i) {
     for (size_t j = 0; j < grid.cols(); ++j) {
       unpaired_grid(i, 2 * j) = grid(i, j).first;
