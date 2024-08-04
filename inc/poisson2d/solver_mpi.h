@@ -1,12 +1,13 @@
-// File: inc/poisson2d/solver.h
-#ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_H_
-#define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_H_
+// File: inc/poisson2d/solver_mpi.h
+#ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_MPI_H_
+#define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_MPI_H_
 
 #include <cmath>
 #include <vector>
 #include <functional>
 #include "grid.h"
 #include "bound.h"
+#include "mpi_util.h"
 
 namespace fluid_dynamics {
 
@@ -32,8 +33,8 @@ class Solver {
   void norm(std::function<T(const Grid<T>&, const Grid<T>&)> norm);
   void source(std::function<T(size_t, size_t)> source);
 
-  Grid<T> Solve(size_t rows, size_t cols, const Bound<T>& bound);
-  Grid<std::pair<T, T>> Gradient(const Grid<T>& field);
+  Grid<T> SolveMpi(size_t rows, size_t cols, Bound<T>& global_bound, MpiGrid2D& mpi_grid);
+  Grid<std::pair<T, T>> GradientMpi(const Grid<T>& field, MpiGrid2D& mpi_grid);
 
  private:
   T epsilon_;
@@ -47,11 +48,16 @@ class Solver {
   static T DefaultNorm(const Grid<T>& prev, const Grid<T>& curr, bool exclude_boundaries = false);
   static T DefaultSource(size_t, size_t);
 
-  Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
+  Grid<T> UpdateMpi(const Grid<T>& prev, Bound<T>& local_bound, MpiGrid2D& mpi_grid);
+
+  Bound<T> LocalBoundaries(const Bound<T>& global_bound, size_t rows, size_t cols, MpiGrid2D& mpi_grid);
+  bool TestBoundary(const Boundary<T>& boundary, size_t rows, size_t cols, MpiGrid2D& mpi_grid);
+
+  void ExchangeBoundaryData(Grid<T>& grid, MpiGrid2D& mpi_grid);
 }; // class Solver
 
 } // namespace fluid_dynamics
 
-#include "solver.tpp"
+#include "solver_mpi.tpp"
 
-#endif // FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_H_
+#endif // FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_MPI_H_
