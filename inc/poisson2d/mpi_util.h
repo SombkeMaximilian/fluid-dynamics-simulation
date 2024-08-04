@@ -35,19 +35,19 @@ class MpiGrid2D {
   [[nodiscard]] const int* dims() const;
   [[nodiscard]] const int* periods() const;
   [[nodiscard]] const int* coords() const;
-  [[nodiscard]] MPI_Datatype boundary_row() const;
-  [[nodiscard]] MPI_Datatype boundary_col() const;
+  [[nodiscard]] MPI_Datatype row_type() const;
+  [[nodiscard]] MPI_Datatype col_type() const;
 
-  void boundary_row(MPI_Datatype boundary_row);
-  void boundary_col(MPI_Datatype boundary_col);
+  void row_type(MPI_Datatype row_type);
+  void col_type(MPI_Datatype col_type);
 
-  void CreateBoundaryRowType(size_t cols, MPI_Datatype type);
-  void CreateBoundaryColType(size_t rows, size_t cols_offset, MPI_Datatype type);
-  void CreateBoundaryTypes(size_t rows, size_t cols, size_t cols_offset, MPI_Datatype type);
+  void CreateRowType(size_t cols, MPI_Datatype type);
+  void CreateColType(size_t rows, size_t cols_offset, MPI_Datatype type);
+  void CreateTypes(size_t rows, size_t cols, size_t cols_offset, MPI_Datatype type);
 
-  void FreeBoundaryRowType();
-  void FreeBoundaryColType();
-  void FreeBoundaryTypes();
+  void FreeRowType();
+  void FreeColType();
+  void FreeTypes();
 
   [[nodiscard]] size_t GlobalRow(size_t i, size_t data_rows) const;
   [[nodiscard]] size_t GlobalCol(size_t j, size_t data_cols) const;
@@ -65,11 +65,8 @@ class MpiGrid2D {
   int dims_[2];
   int periods_[2];
   int coords_[2];
-  MPI_Datatype boundary_row_;
-  MPI_Datatype boundary_col_;
-
-  void CreateRowType(int count, MPI_Datatype type);
-  void CreateColType(int count, int stride, MPI_Datatype type);
+  MPI_Datatype row_type_;
+  MPI_Datatype col_type_;
 }; // class MpiGrid2D
 
 template<typename T> static inline MPI_Datatype GetMpiType();
