@@ -122,11 +122,11 @@ int MpiGrid2D::bot() const {
 }
 
 int MpiGrid2D::rows() const {
-  return dims_[0];
+  return dims_[1];
 }
 
 int MpiGrid2D::cols() const {
-  return dims_[1];
+  return dims_[0];
 }
 
 const int* MpiGrid2D::dims() const {
