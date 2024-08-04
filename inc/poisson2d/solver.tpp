@@ -119,6 +119,35 @@ Grid<std::pair<T, T>> Solver<T>::Gradient(const Grid<T>& field) {
 }
 
 template<typename T>
+Grid<std::pair<T, T>> Solver<T>::GradientMpi(const Grid<T>& field, MpiGrid2D& mpi_grid) {
+  Grid<T> expanded_field{field};
+  Grid<std::pair<T, T>> grad{field.rows(), field.cols()};
+  size_t origin_row = mpi_grid.GlobalRow(0, field.rows());
+  size_t origin_col = mpi_grid.GlobalCol(0, field.cols());
+  size_t start_row = (origin_row == 0) ? 1 : 0;
+  size_t start_col = (origin_col == 0) ? 1 : 0;
+  size_t end_row = (origin_row == field.rows() * (mpi_grid.dims()[1] - 1)) ? field.rows() - 1 : field.rows();
+  size_t end_col = (origin_col == field.cols() * (mpi_grid.dims()[0] - 1)) ? field.cols() - 1 : field.cols();
+
+  mpi_grid.CreateRowType(field.cols(), GetMpiType<T>());
+  mpi_grid.CreateColType(field.rows(), field.cols() + 2, GetMpiType<T>());
+  expanded_field.Resize(expanded_field.rows() + 2, expanded_field.cols() + 2, {1, 1});
+
+  ExchangeBoundaryData(expanded_field, mpi_grid);
+
+  for (size_t i = start_row; i < end_row; ++i) {
+    for (size_t j = start_col; j < end_col; ++j) {
+      grad(i, j).first = (expanded_field(i + 1, j + 2) - expanded_field(i + 1, j)) / 2;
+      grad(i, j).second = (expanded_field(i + 2, j + 1) - expanded_field(i, j + 1)) / 2;
+    }
+  }
+
+  mpi_grid.FreeTypes();
+
+  return grad;
+}
+
+template<typename T>
 T Solver<T>::DefaultNorm(const Grid<T>& prev, const Grid<T>& curr, bool exclude_boundaries) {
   T norm = 0;
   size_t start_row = exclude_boundaries ? 1 : 0;
