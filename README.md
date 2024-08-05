@@ -21,19 +21,20 @@ To use the library, include the appropriate header file:
 - `poisson2d.h` : Serial implementation contains `Grid`, `Bound` and `Solver` classes
 - `poisson2d_mpi.h` : MPI implementation additionally contains `SolverMpi` and `MpiGrid2D` classes
 
-## Building the examples
+## Building
 
-To build the example programs, run the following commands:
+To build the example programs and tests, run the following commands:
 ```bash
 mkdir build
 cmake -S . -B build
-make FDSimSerial FDSimMPI -C build --no-print-directory
+make -C build --no-print-directory
 ```
 which will create the following executables:
 - `FDSimSerial`: Serial implementation
 - `FDSimMPI`: MPI implementation with OpenMP directives
+- `FDSimUnitTests`: Unit tests
 
-## Running the examples
+## Running
 
 ### Serial example
 
@@ -50,7 +51,7 @@ where the arguments are:
 
 The parallelized executable `FDSimMPI` can be run with the following command:
 ```bash
-mpirun -np 4 build/FDSimMPI -L 102 -epsilon 1e-2 -max_iter 5000
+mpirun -np 9 --oversubscribe build/FDSimMPI -L 102 -epsilon 1e-6 -max_iter 10000
 ```
 where the arguments are the same as the serial example, with the additional `-np` flag to specify the number of MPI processes.
 
@@ -63,3 +64,10 @@ python3 plot/plot.py
 which will generate a plot of the velocity field in the `plot/plots` directory. For the example above, the plot will be saved as `plot/plots/velocity.png` and will look like this:
 
 ![Simulation Result](https://github.com/SombkeMaximilian/fluid-dynamics-simulation/blob/main/img/velocity.png)
+
+### Testing
+
+The unit tests can be run with the following command:
+```bash
+build/test/FDSimUnitTests
+```
