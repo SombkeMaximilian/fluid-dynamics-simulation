@@ -97,7 +97,7 @@ Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound, bool v
       std::cout << "Reached maximum number of iterations: " << max_iter_ << std::endl;
       std::cout << "Norm: " << norm << std::endl;
     }
-    std::cout << std::setprecision(3) << "Time Taken: " << time_taken.count() << "s\n" << std::endl;
+    std::cout << std::setprecision(6) << "Time Taken: " << time_taken.count() << "s\n" << std::endl;
   }
 
   return curr;
