@@ -7,6 +7,9 @@
 # CMake build directory
 cmake-build-debug/
 
+# Build directory
+build/
+
 # Plots generated for example
 plots/
 
