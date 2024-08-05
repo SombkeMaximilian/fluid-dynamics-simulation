@@ -88,4 +88,4 @@ class SolverTestBase : public ::testing::Test {
   }
 };
 
-#endif //FLUID_DYNAMICS_SIMULATION_TEST_TEST_UTILS_H_
+#endif // FLUID_DYNAMICS_SIMULATION_TEST_TEST_UTILS_H_
