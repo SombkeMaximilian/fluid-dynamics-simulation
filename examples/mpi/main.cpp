@@ -1,4 +1,6 @@
+#include <iostream>
 #include "poisson2d/poisson2d_mpi.h"
+#include "../parse_args.h"
 
 fluid_dynamics::Bound<double> CreateBound(size_t L) {
   size_t L_half = L / 2;
@@ -137,34 +139,51 @@ double ParallelNorm(const fluid_dynamics::Grid<double>& prev, const fluid_dynami
   return sqrt(norm);
 }
 
-int main() {
+int main(int argc, char** argv) {
   fluid_dynamics::MpiGrid2D mpi_grid(MPI_COMM_WORLD);
-  size_t L = 102;
+  size_t L;
+  double epsilon;
+  size_t max_iter;
+
+  if (mpi_grid.rank() == 0) {
+    parse_args::ParseArgs(argc, argv, L, epsilon, max_iter);
+  }
+  MPI_Bcast(&L, 1, MPI_UNSIGNED_LONG, 0, mpi_grid.comm());
+  MPI_Bcast(&epsilon, 1, MPI_DOUBLE, 0, mpi_grid.comm());
+  MPI_Bcast(&max_iter, 1, MPI_UNSIGNED_LONG, 0, mpi_grid.comm());
+  if (mpi_grid.rank() == 0) {
+    std::cout << "Running with L = " << L << ", epsilon = " << epsilon << ", max_iter = " << max_iter << std::endl;
+  }
+  MPI_Barrier(mpi_grid.comm());
+
   size_t local_rows = mpi_grid.LocalRows(L);
   size_t local_cols = mpi_grid.LocalCols(L);
   fluid_dynamics::Grid<double> grid(local_rows, local_cols);
-  fluid_dynamics::Grid<std::pair<double, double>> grad;
+  fluid_dynamics::Grid<std::pair<double, double>> grad(local_rows, local_cols);
+  fluid_dynamics::Grid<std::pair<double, double>> velocities(local_rows, local_cols);
   fluid_dynamics::Bound<double> bound = CreateBound(L);
-  fluid_dynamics::SolverMpi<double> solver(1e-2, 10000);
+  fluid_dynamics::SolverMpi<double> solver(epsilon, max_iter);
 
   solver.norm(ParallelNorm);
 
-  grid = solver.Solve(local_rows, local_cols, bound, mpi_grid);
+  if (mpi_grid.rank() == 0) {
+    std::cout << "Computing the stream function values on the grid.." << std::endl;
+  }
+  grid = solver.Solve(local_rows, local_cols, bound, mpi_grid, true);
+
+  if (mpi_grid.rank() == 0) {
+    std::cout << "Computing the gradient of the stream function.." << std::endl;
+  }
   grad = solver.Gradient(grid, mpi_grid);
 
-  fluid_dynamics::Grid<std::pair<double, double>> velocities(grad.rows(), grad.cols());
-
-  for (size_t i = 0; i < local_rows; ++i) {
-    for (size_t j = 0; j < local_cols; ++j) {
-      velocities(i, j).first = grad(i, j).second;
-      if (grad(i, j).first != 0.0) {
-        velocities(i, j).second = -grad(i, j).first;
-      } else {
-        velocities(i, j).second = 0;
-      }
-    }
+  if (mpi_grid.rank() == 0) {
+    std::cout << "Computing the flow velocities.." << std::endl;
   }
+  velocities = solver.Velocity(grad);
 
+  if (mpi_grid.rank() == 0) {
+    std::cout << "Writing the flow velocity values to file.." << std::endl;
+  }
   WriteGridBinary(velocities, "vec.bin", mpi_grid);
 
   return 0;
