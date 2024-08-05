@@ -61,4 +61,5 @@ The output of the simulation is stored in a file named `velocity.bin`. To visual
 python3 plot/plot.py
 ```
 which will generate a plot of the velocity field in the `plot/plots` directory. For the example above, the plot will be saved as `plot/plots/velocity.png` and will look like this:
+
 ![Simulation Result](img/velocity.png)
