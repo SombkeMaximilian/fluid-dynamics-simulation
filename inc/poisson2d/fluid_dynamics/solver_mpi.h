@@ -17,7 +17,7 @@ class SolverMpi : public Solver<T> {
  public:
   using Solver<T>::Solver;
 
-  Grid<T> Solve(size_t rows, size_t cols, Bound<T>& global_bound, MpiGrid2D& mpi_grid);
+  Grid<T> Solve(size_t rows, size_t cols, Bound<T>& global_bound, MpiGrid2D& mpi_grid, bool verbose = false);
   Grid<std::pair<T, T>> Gradient(const Grid<T>& field, MpiGrid2D& mpi_grid);
   Grid<std::pair<T, T>> Velocity(const Grid<std::pair<T, T>>& grad) override;
 

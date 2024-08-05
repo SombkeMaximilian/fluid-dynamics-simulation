@@ -2,13 +2,15 @@
 namespace fluid_dynamics {
 
 template<typename T>
-Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, MpiGrid2D& mpi_grid) {
+Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, MpiGrid2D& mpi_grid, bool verbose) {
   Grid<T> prev{rows, cols};
   Grid<T> curr{rows, cols};
   Bound<T> local_bound{LocalBoundaries(global_bound, rows, cols, mpi_grid)};
   size_t origin_row = mpi_grid.GlobalRow(0, prev.rows());
   size_t origin_col = mpi_grid.GlobalCol(0, prev.cols());
   T local_norm, global_norm;
+  int progress_intervals = static_cast<int>(Solver<T>::max_iter() * 0.05);
+  int progress_steps = 0;
 
   #pragma omp parallel for default(none) collapse(2) shared(prev, origin_row, origin_col)
   for (size_t i = 0; i < prev.rows(); ++i) {
@@ -33,6 +35,14 @@ Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, Mp
     }
 
     prev = curr;
+
+    if (verbose && mpi_grid.rank() == 0 && iter == progress_steps * progress_intervals) {
+      Solver<T>::Progress(iter, Solver<T>::max_iter());
+      ++progress_steps;
+    }
+  }
+  if (verbose) {
+    Solver<T>::Progress(Solver<T>::max_iter(), Solver<T>::max_iter());
   }
 
   curr.Resize(curr.rows() - 2, curr.cols() - 2, {-1, -1});
