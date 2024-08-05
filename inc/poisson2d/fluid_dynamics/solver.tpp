@@ -58,10 +58,10 @@ Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound, bool v
   Grid<T> prev{rows, cols};
   Grid<T> curr{rows, cols};
   T norm;
-  int progress_intervals = static_cast<int>(max_iter_ * 0.05);
-  int progress_steps = 0;
   size_t iter;
   bool converged = false;
+  int progress_intervals = static_cast<int>(max_iter_ * 0.05);
+  int progress_steps = 0;
 
   for (size_t i = 0; i < prev.rows(); ++i) {
     for (size_t j = 0; j < prev.cols(); ++j) {
