@@ -21,12 +21,4 @@ set(MPI_SOURCE_FILES
 add_executable(FDSimMPI ${MPI_SOURCE_FILES})
 target_link_libraries(FDSimMPI MPI::MPI_CXX OpenMP::OpenMP_CXX)
 
-include(FetchContent)
-FetchContent_Declare(
-    googletest
-    URL https://github.com/google/googletest/archive/refs/heads/main.zip
-)
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-
 add_subdirectory(test)
