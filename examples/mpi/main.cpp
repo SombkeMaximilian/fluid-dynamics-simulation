@@ -184,7 +184,7 @@ int main(int argc, char** argv) {
   if (mpi_grid.rank() == 0) {
     std::cout << "Writing the flow velocity values to file.." << std::endl;
   }
-  WriteGridBinary(velocities, "plot/vec.bin", mpi_grid);
+  WriteGridBinary(velocities, "plot/velocity.bin", mpi_grid);
 
   return 0;
 }
