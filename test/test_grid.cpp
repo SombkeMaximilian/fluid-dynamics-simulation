@@ -14,23 +14,23 @@ using GridTypes = ::testing::Types<
 >;
 
 template<typename T>
-class GridConstructorTest : public GridTestBase<T> {};
+class GridConstructor : public GridTestBase<T> {};
 
-TYPED_TEST_SUITE(GridConstructorTest, GridTypes);
+TYPED_TEST_SUITE(GridConstructor, GridTypes);
 
-TYPED_TEST(GridConstructorTest, Default) {
+TYPED_TEST(GridConstructor, Default) {
   fluid_dynamics::Grid<TypeParam> grid;
   this->verifyDimensions(grid, 0, 0);
 }
 
-TYPED_TEST(GridConstructorTest, Square) {
+TYPED_TEST(GridConstructor, Square) {
   size_t dim = 10;
   fluid_dynamics::Grid<TypeParam> grid(dim);
 
   this->verifyDimensions(grid, dim, dim);
 }
 
-TYPED_TEST(GridConstructorTest, SquareWithData) {
+TYPED_TEST(GridConstructor, SquareWithData) {
   size_t dim = 10;
   std::vector<TypeParam> data(dim * dim, 1);
   fluid_dynamics::Grid<TypeParam> grid(dim, data);
@@ -39,7 +39,7 @@ TYPED_TEST(GridConstructorTest, SquareWithData) {
   this->verifyData(grid, data);
 }
 
-TYPED_TEST(GridConstructorTest, SquareWithDataMove) {
+TYPED_TEST(GridConstructor, SquareWithDataMove) {
   size_t dim = 10;
   std::vector<TypeParam> data(dim * dim, 1);
   std::vector<TypeParam> data_copy = data;
@@ -50,7 +50,7 @@ TYPED_TEST(GridConstructorTest, SquareWithDataMove) {
   EXPECT_TRUE(data.empty());
 }
 
-TYPED_TEST(GridConstructorTest, Rectangle) {
+TYPED_TEST(GridConstructor, Rectangle) {
   size_t rows = 5;
   size_t cols = 10;
   fluid_dynamics::Grid<TypeParam> grid(rows, cols);
@@ -58,7 +58,7 @@ TYPED_TEST(GridConstructorTest, Rectangle) {
   this->verifyDimensions(grid, rows, cols);
 }
 
-TYPED_TEST(GridConstructorTest, RectangleWithData) {
+TYPED_TEST(GridConstructor, RectangleWithData) {
   size_t rows = 5;
   size_t cols = 10;
   std::vector<TypeParam> data(rows * cols, 1);
@@ -68,7 +68,7 @@ TYPED_TEST(GridConstructorTest, RectangleWithData) {
   this->verifyData(grid, data);
 }
 
-TYPED_TEST(GridConstructorTest, RectangleWithDataMove) {
+TYPED_TEST(GridConstructor, RectangleWithDataMove) {
   size_t rows = 5;
   size_t cols = 10;
   std::vector<TypeParam> data(rows * cols, 1);

@@ -15,31 +15,31 @@ using BoundTypes = ::testing::Types<
 >;
 
 template<typename T>
-class BoundConstructorTest : public ::testing::Test {
+class BoundConstructor : public ::testing::Test {
  protected:
   void verifyType(const fluid_dynamics::Bound<T>& bound, fluid_dynamics::BoundaryType expected_type) {
     EXPECT_EQ(bound.type(), expected_type);
   }
 };
 
-TYPED_TEST_SUITE(BoundConstructorTest, BoundTypes);
+TYPED_TEST_SUITE(BoundConstructor, BoundTypes);
 
-TYPED_TEST(BoundConstructorTest, Default) {
+TYPED_TEST(BoundConstructor, Default) {
   fluid_dynamics::Bound<TypeParam> bound;
   this->verifyType(bound, fluid_dynamics::BoundaryType::kDirichlet);
 }
 
-TYPED_TEST(BoundConstructorTest, Dirichlet) {
+TYPED_TEST(BoundConstructor, Dirichlet) {
   fluid_dynamics::Bound<TypeParam> bound(fluid_dynamics::BoundaryType::kDirichlet);
   this->verifyType(bound, fluid_dynamics::BoundaryType::kDirichlet);
 }
 
-TYPED_TEST(BoundConstructorTest, Periodic) {
+TYPED_TEST(BoundConstructor, Periodic) {
   fluid_dynamics::Bound<TypeParam> bound(fluid_dynamics::BoundaryType::kPeriodic);
   this->verifyType(bound, fluid_dynamics::BoundaryType::kPeriodic);
 }
 
-TYPED_TEST(BoundConstructorTest, DirichletWithBoundaries) {
+TYPED_TEST(BoundConstructor, DirichletWithBoundaries) {
   std::vector<fluid_dynamics::Boundary<TypeParam>> boundaries = {
       {[](size_t i, size_t j) { return i == 0; }, [](size_t i, size_t j) { return 1; }},
       {[](size_t i, size_t j) { return i == 1; }, [](size_t i, size_t j) { return 2; }},
@@ -51,7 +51,7 @@ TYPED_TEST(BoundConstructorTest, DirichletWithBoundaries) {
   EXPECT_EQ(bound.size(), boundaries.size());
 }
 
-TYPED_TEST(BoundConstructorTest, PeriodicWithBoundaries) {
+TYPED_TEST(BoundConstructor, PeriodicWithBoundaries) {
   std::vector<fluid_dynamics::Boundary<TypeParam>> boundaries = {
       {[](size_t i, size_t j) { return i == 0; }, [](size_t i, size_t j) { return 1; }},
       {[](size_t i, size_t j) { return i == 1; }, [](size_t i, size_t j) { return 2; }},
@@ -63,7 +63,7 @@ TYPED_TEST(BoundConstructorTest, PeriodicWithBoundaries) {
   EXPECT_EQ(bound.size(), boundaries.size());
 }
 
-TYPED_TEST(BoundConstructorTest, DirichletWithBoundariesMove) {
+TYPED_TEST(BoundConstructor, DirichletWithBoundariesMove) {
   std::vector<fluid_dynamics::Boundary<TypeParam>> boundaries = {
       {[](size_t i, size_t j) { return i == 0; }, [](size_t i, size_t j) { return 1; }},
       {[](size_t i, size_t j) { return i == 1; }, [](size_t i, size_t j) { return 2; }},
@@ -77,7 +77,7 @@ TYPED_TEST(BoundConstructorTest, DirichletWithBoundariesMove) {
   EXPECT_TRUE(boundaries.empty());
 }
 
-TYPED_TEST(BoundConstructorTest, PeriodicWithBoundariesMove) {
+TYPED_TEST(BoundConstructor, PeriodicWithBoundariesMove) {
   std::vector<fluid_dynamics::Boundary<TypeParam>> boundaries = {
       {[](size_t i, size_t j) { return i == 0; }, [](size_t i, size_t j) { return 1; }},
       {[](size_t i, size_t j) { return i == 1; }, [](size_t i, size_t j) { return 2; }},
@@ -92,7 +92,7 @@ TYPED_TEST(BoundConstructorTest, PeriodicWithBoundariesMove) {
 }
 
 template<typename T>
-class BoundPublicMethodTest : public ::testing::Test {
+class BoundPublicMethod : public ::testing::Test {
  protected:
   void verifyType(const fluid_dynamics::Bound<T>& bound, fluid_dynamics::BoundaryType expected_type) {
     EXPECT_EQ(bound.type(), expected_type);
@@ -107,9 +107,9 @@ class BoundPublicMethodTest : public ::testing::Test {
   }
 };
 
-TYPED_TEST_SUITE(BoundPublicMethodTest, BoundTypes);
+TYPED_TEST_SUITE(BoundPublicMethod, BoundTypes);
 
-TYPED_TEST(BoundPublicMethodTest, Type) {
+TYPED_TEST(BoundPublicMethod, Type) {
   fluid_dynamics::Bound<TypeParam> bound;
 
   this->verifyType(bound, fluid_dynamics::BoundaryType::kDirichlet);
@@ -117,7 +117,7 @@ TYPED_TEST(BoundPublicMethodTest, Type) {
   this->verifyType(bound, fluid_dynamics::BoundaryType::kPeriodic);
 }
 
-TYPED_TEST(BoundPublicMethodTest, Boundaries) {
+TYPED_TEST(BoundPublicMethod, Boundaries) {
   fluid_dynamics::Grid<TypeParam> grid(4, 4), expected(4, 4, {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 0, 0});
   std::vector<fluid_dynamics::Boundary<TypeParam>> boundaries = {
       {[](size_t i, size_t j) { return i == 0; }, [](size_t i, size_t j) { return 1; }},
