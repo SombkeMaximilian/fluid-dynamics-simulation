@@ -244,7 +244,7 @@ void WriteGridBinary(Grid<T>& grid, const std::string& filename, MpiGrid2D& mpi_
   MPI_Offset row_offset;
   int mode = MPI_MODE_CREATE | MPI_MODE_WRONLY;
 
-  mpi_grid.CreateRowType(grid.cols(), GetMpiType<T>());
+  mpi_grid.CreateRowType(grid.cols(), MpiType<T>());
   MPI_File_open(mpi_grid.comm(), filename.c_str(), mode, MPI_INFO_NULL, &file);
   MPI_File_set_size(file, file_size);
 
@@ -274,58 +274,56 @@ void WriteGridBinary(Grid<std::pair<T, T>>& grid, const std::string& filename, M
 }
 
 template<typename T>
-static inline MPI_Datatype GetMpiType() {
-  MPI_Datatype mpi_type = MPI_DATATYPE_NULL;
-
+static inline MPI_Datatype MpiType() {
   if (std::is_same<T, signed short>::value) {
-    mpi_type = MPI_SHORT;
+    return MPI_SHORT;
   } else if (std::is_same<T, unsigned short>::value) {
-    mpi_type = MPI_UNSIGNED_SHORT;
+    return MPI_UNSIGNED_SHORT;
   } else if (std::is_same<T, signed int>::value) {
-    mpi_type = MPI_INT;
+    return MPI_INT;
   } else if (std::is_same<T, unsigned int>::value) {
-    mpi_type = MPI_UNSIGNED;
+    return MPI_UNSIGNED;
   } else if (std::is_same<T, signed long int>::value) {
-    mpi_type = MPI_LONG;
+    return MPI_LONG;
   } else if (std::is_same<T, unsigned long int>::value) {
-    mpi_type = MPI_UNSIGNED_LONG;
+    return MPI_UNSIGNED_LONG;
   } else if (std::is_same<T, signed long long int>::value) {
-    mpi_type = MPI_LONG_LONG;
+    return MPI_LONG_LONG;
   } else if (std::is_same<T, unsigned long long int>::value) {
-    mpi_type = MPI_UNSIGNED_LONG_LONG;
+    return MPI_UNSIGNED_LONG_LONG;
   } else if (std::is_same<T, float>::value) {
-    mpi_type = MPI_FLOAT;
+    return MPI_FLOAT;
   } else if (std::is_same<T, double>::value) {
-    mpi_type = MPI_DOUBLE;
+    return MPI_DOUBLE;
   } else if (std::is_same<T, long double>::value) {
-    mpi_type = MPI_LONG_DOUBLE;
+    return MPI_LONG_DOUBLE;
   } else if (std::is_same<T, std::int8_t>::value) {
-    mpi_type = MPI_INT8_T;
+    return MPI_INT8_T;
   } else if (std::is_same<T, std::int16_t>::value) {
-    mpi_type = MPI_INT16_T;
+    return MPI_INT16_T;
   } else if (std::is_same<T, std::int32_t>::value) {
-    mpi_type = MPI_INT32_T;
+    return MPI_INT32_T;
   } else if (std::is_same<T, std::int64_t>::value) {
-    mpi_type = MPI_INT64_T;
+    return MPI_INT64_T;
   } else if (std::is_same<T, std::uint8_t>::value) {
-    mpi_type = MPI_UINT8_T;
+    return MPI_UINT8_T;
   } else if (std::is_same<T, std::uint16_t>::value) {
-    mpi_type = MPI_UINT16_T;
+    return MPI_UINT16_T;
   } else if (std::is_same<T, std::uint32_t>::value) {
-    mpi_type = MPI_UINT32_T;
+    return MPI_UINT32_T;
   } else if (std::is_same<T, std::uint64_t>::value) {
-    mpi_type = MPI_UINT64_T;
+    return MPI_UINT64_T;
   } else if (std::is_same<T, bool>::value) {
-    mpi_type = MPI_C_BOOL;
+    return MPI_C_BOOL;
   } else if (std::is_same<T, std::complex<float>>::value) {
-    mpi_type = MPI_C_COMPLEX;
+    return MPI_C_COMPLEX;
   } else if (std::is_same<T, std::complex<double>>::value) {
-    mpi_type = MPI_C_DOUBLE_COMPLEX;
+    return MPI_C_DOUBLE_COMPLEX;
   } else if (std::is_same<T, std::complex<long double>>::value) {
-    mpi_type = MPI_C_LONG_DOUBLE_COMPLEX;
+    return MPI_C_LONG_DOUBLE_COMPLEX;
+  } else {
+    return MPI_DATATYPE_NULL;
   }
-
-  return mpi_type;
 }
 
 } // namespace fluid_dynamics

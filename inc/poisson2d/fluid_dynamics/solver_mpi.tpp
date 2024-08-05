@@ -19,8 +19,8 @@ Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, Mp
     }
   }
 
-  mpi_grid.CreateRowType(prev.cols(), GetMpiType<T>());
-  mpi_grid.CreateColType(prev.rows(), prev.cols() + 2, GetMpiType<T>());
+  mpi_grid.CreateRowType(prev.cols(), MpiType<T>());
+  mpi_grid.CreateColType(prev.rows(), prev.cols() + 2, MpiType<T>());
   prev.Resize(prev.rows() + 2, prev.cols() + 2, {1, 1});
   curr.Resize(curr.rows() + 2, curr.cols() + 2, {1, 1});
 
@@ -29,7 +29,7 @@ Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, Mp
     curr = Update(prev, local_bound, mpi_grid);
 
     local_norm = Solver<T>::norm(prev, curr, true);
-    MPI_Allreduce(&local_norm, &global_norm, 1, GetMpiType<T>(), MPI_SUM, mpi_grid.comm());
+    MPI_Allreduce(&local_norm, &global_norm, 1, MpiType<T>(), MPI_SUM, mpi_grid.comm());
     if (global_norm < Solver<T>::epsilon()) {
       break;
     }
@@ -61,8 +61,8 @@ Grid<std::pair<T, T>> SolverMpi<T>::Gradient(const Grid<T>& field, MpiGrid2D& mp
   size_t end_row = (mpi_grid.row() == mpi_grid.rows() - 1) ? field.rows() - 1 : field.rows();
   size_t end_col = (mpi_grid.col() == mpi_grid.cols() - 1) ? field.cols() - 1 : field.cols();
 
-  mpi_grid.CreateRowType(field.cols(), GetMpiType<T>());
-  mpi_grid.CreateColType(field.rows(), field.cols() + 2, GetMpiType<T>());
+  mpi_grid.CreateRowType(field.cols(), MpiType<T>());
+  mpi_grid.CreateColType(field.rows(), field.cols() + 2, MpiType<T>());
   expanded_field.Resize(expanded_field.rows() + 2, expanded_field.cols() + 2, {1, 1});
 
   ExchangeBoundaryData(expanded_field, mpi_grid);

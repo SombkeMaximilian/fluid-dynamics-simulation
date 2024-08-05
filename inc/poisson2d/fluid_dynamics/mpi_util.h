@@ -76,7 +76,7 @@ class MpiGrid2D {
 template<typename T> void WriteGridBinary(Grid<T>& grid, const std::string& filename, MpiGrid2D& mpi_grid);
 template<typename T> void WriteGridBinary(Grid<std::pair<T, T>>& grid, const std::string& filename, MpiGrid2D& mpi_grid);
 
-template<typename T> static inline MPI_Datatype GetMpiType();
+template<typename T> static inline MPI_Datatype MpiType();
 
 } // namespace fluid_dynamics
 
