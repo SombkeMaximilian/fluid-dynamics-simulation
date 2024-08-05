@@ -144,6 +144,16 @@ int main(int argc, char** argv) {
   fluid_dynamics::Grid<std::pair<double, double>> velocities(local_rows, local_cols);
   fluid_dynamics::Bound<double> bound = CreateBound(L);
   fluid_dynamics::SolverMpi<double> solver(epsilon, max_iter);
+  int epsilon_precision = 0;
+
+  if (mpi_grid.rank() == 0) {
+    while (epsilon < 1) {
+      epsilon *= 10;
+      ++epsilon_precision;
+    }
+    std::cout.setf(std::ios_base::fixed);
+    std::cout.precision(epsilon_precision);
+  }
 
   if (mpi_grid.rank() == 0) {
     std::cout << "Computing the stream function values on the grid.." << std::endl;
