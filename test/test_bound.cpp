@@ -93,7 +93,7 @@ class BoundPublicMethod : public BoundTestBase<T> {};
 
 TYPED_TEST_SUITE(BoundPublicMethod, BoundTypes);
 
-TYPED_TEST(BoundPublicMethod, Type) {
+TYPED_TEST(BoundPublicMethod, MutateType) {
   fluid_dynamics::Bound<TypeParam> bound;
 
   this->verifyType(bound, fluid_dynamics::BoundaryType::kDirichlet);
