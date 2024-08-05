@@ -1,4 +1,6 @@
+#include <iostream>
 #include "poisson2d/poisson2d.h"
+#include "../parse_args.h"
 
 fluid_dynamics::Bound<double> CreateBound(size_t L) {
   size_t L_half = L / 2;
@@ -118,26 +120,27 @@ fluid_dynamics::Bound<double> CreateBound(size_t L) {
   return bound;
 }
 
-int main() {
-  size_t L = 102;
+int main(int argc, char* argv[]) {
+  size_t L;
+  double epsilon;
+  size_t max_iter;
+  parse_args::ParseArgs(argc, argv, L, epsilon, max_iter);
+
+  std::cout << "Running with L = " << L << ", epsilon = " << epsilon << ", max_iter = " << max_iter << std::endl;
+
   fluid_dynamics::Grid<double> grid;
   fluid_dynamics::Grid<std::pair<double, double>> grad(L), velocities(L);
   fluid_dynamics::Bound<double> bound = CreateBound(L);
   fluid_dynamics::Solver<double> solver(1e-2, 10000);
 
+  std::cout << "Computing the stream function values on the grid.." << std::endl;
   grid = solver.Solve(L, L, bound);
+
+  std::cout << "Computing the gradient of the stream function.." << std::endl;
   grad = solver.Gradient(grid);
 
-  for (size_t i = 1; i < L - 1; ++i) {
-    for (size_t j = 1; j < L - 1; ++j) {
-      velocities(i, j).first = grad(i, j).second;
-      if (grad(i, j).first != 0.0) {
-        velocities(i, j).second = -grad(i, j).first;
-      } else {
-        velocities(i, j).second = 0;
-      }
-    }
-  }
+  std::cout << "Computing the flow velocities.." << std::endl;
+  velocities = solver.Velocity(grad);
 
   WriteGridBinary(velocities, "vec.bin");
   WriteGridText(velocities, "vec.txt");
