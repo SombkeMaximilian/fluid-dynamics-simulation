@@ -212,7 +212,13 @@ size_t MpiGrid2D::LocalRows(size_t global_rows) const {
   if (global_rows % rows() == 0) {
     return global_rows / rows();
   } else {
-    throw std::runtime_error("Global rows is not divisible by the number of rows");
+    if (rank() == 0) {
+      std::cout << "L must be divisible by the number of rows in Process Grid. ";
+      std::cout << "L = " << global_rows << " can't be distributed among the rows of ";
+      std::cout << size() << " Processes in " << rows() << "x" << cols() << " Grid." << std::endl;
+      MPI_Abort(comm(), 1);
+    }
+    return 0;
   }
 }
 
@@ -220,8 +226,14 @@ size_t MpiGrid2D::LocalCols(size_t global_cols) const {
   if (global_cols % cols() == 0) {
     return global_cols / cols();
   } else {
-    throw std::runtime_error("Global cols is not divisible by the number of cols");
+    if (rank() == 0) {
+      std::cout << "L must be divisible by the number of columns in Process Grid. ";
+      std::cout << "L = " << global_cols << " can't be distributed among columns of ";
+      std::cout << size() << " Processes in " << rows() << "x" << cols() << " Grid." << std::endl;
+      MPI_Abort(comm(), 1);
+    }
   }
+  return 0;
 }
 
 template<typename T>
