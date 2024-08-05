@@ -52,4 +52,20 @@ class GridTestBase : public ::testing::Test {
   }
 };
 
+template<typename T>
+class BoundTestBase : public ::testing::Test {
+ protected:
+  void verifyType(const fluid_dynamics::Bound<T>& bound, fluid_dynamics::BoundaryType expected_type) {
+    EXPECT_EQ(bound.type(), expected_type);
+  }
+
+  void verifyData(const fluid_dynamics::Grid<T>& grid, const fluid_dynamics::Grid<T>& expected) {
+    for (size_t i = 0; i < grid.rows(); ++i) {
+      for (size_t j = 0; j < grid.cols(); ++j) {
+        EXPECT_TYPE_EQ(grid(i, j), expected(i, j));
+      }
+    }
+  }
+};
+
 #endif //FLUID_DYNAMICS_SIMULATION_TEST_TEST_UTILS_H_

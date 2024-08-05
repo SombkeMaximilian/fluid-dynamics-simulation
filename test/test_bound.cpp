@@ -15,27 +15,25 @@ using BoundTypes = ::testing::Types<
 >;
 
 template<typename T>
-class BoundConstructor : public ::testing::Test {
- protected:
-  void verifyType(const fluid_dynamics::Bound<T>& bound, fluid_dynamics::BoundaryType expected_type) {
-    EXPECT_EQ(bound.type(), expected_type);
-  }
-};
+class BoundConstructor : public BoundTestBase<T> {};
 
 TYPED_TEST_SUITE(BoundConstructor, BoundTypes);
 
 TYPED_TEST(BoundConstructor, Default) {
   fluid_dynamics::Bound<TypeParam> bound;
+
   this->verifyType(bound, fluid_dynamics::BoundaryType::kDirichlet);
 }
 
 TYPED_TEST(BoundConstructor, Dirichlet) {
   fluid_dynamics::Bound<TypeParam> bound(fluid_dynamics::BoundaryType::kDirichlet);
+
   this->verifyType(bound, fluid_dynamics::BoundaryType::kDirichlet);
 }
 
 TYPED_TEST(BoundConstructor, Periodic) {
   fluid_dynamics::Bound<TypeParam> bound(fluid_dynamics::BoundaryType::kPeriodic);
+
   this->verifyType(bound, fluid_dynamics::BoundaryType::kPeriodic);
 }
 
@@ -92,20 +90,7 @@ TYPED_TEST(BoundConstructor, PeriodicWithBoundariesMove) {
 }
 
 template<typename T>
-class BoundPublicMethod : public ::testing::Test {
- protected:
-  void verifyType(const fluid_dynamics::Bound<T>& bound, fluid_dynamics::BoundaryType expected_type) {
-    EXPECT_EQ(bound.type(), expected_type);
-  }
-
-  void verifyData(const fluid_dynamics::Grid<T>& grid, const fluid_dynamics::Grid<T>& expected) {
-    for (size_t i = 0; i < grid.rows(); ++i) {
-      for (size_t j = 0; j < grid.cols(); ++j) {
-        EXPECT_TYPE_EQ(grid(i, j), expected(i, j));
-      }
-    }
-  }
-};
+class BoundPublicMethod : public BoundTestBase<T> {};
 
 TYPED_TEST_SUITE(BoundPublicMethod, BoundTypes);
 
