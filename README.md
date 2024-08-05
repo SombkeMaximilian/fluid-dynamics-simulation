@@ -6,7 +6,7 @@ Contains a serial implementation, and a hybrid implementation using MPI and Open
 
 ## Dependencies
 - MPI 3.1 (other versions might work)
-- OpenMP 5.1 (other versions might work)
+- OpenMP 4.5 (other versions might work)
 
 ## Usage
 
