@@ -17,7 +17,7 @@ set(TEST_FILES
     test_utils.h
 )
 
-add_executable(runTests ${TEST_FILES})
-target_link_libraries(runTests gtest gtest_main)
+add_executable(FDSimUnitTests ${TEST_FILES})
+target_link_libraries(FDSimUnitTests gtest gtest_main)
 
-add_test(NAME runTests COMMAND runTests)
+add_test(NAME FDSimUnitTests COMMAND FDSimUnitTests)
