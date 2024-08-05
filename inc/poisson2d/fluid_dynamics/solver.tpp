@@ -57,6 +57,8 @@ template<typename T>
 Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound) {
   Grid<T> prev{rows, cols};
   Grid<T> curr{rows, cols};
+  int progress_intervals = static_cast<int>(max_iter_ * 0.05);
+  int progress_steps = 0;
 
   for (size_t i = 0; i < prev.rows(); ++i) {
     for (size_t j = 0; j < prev.cols(); ++j) {
@@ -66,9 +68,15 @@ Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound) {
   for (size_t iter = 0; iter < max_iter_; ++iter) {
     curr = Update(prev, bound);
     if (norm_(prev, curr, false) < epsilon_) {
+      Progress(max_iter_, max_iter_);
       break;
     }
     prev = curr;
+
+    if (iter == progress_steps * progress_intervals) {
+      Progress(iter, max_iter_);
+      ++progress_steps;
+    }
   }
 
   return curr;
@@ -150,6 +158,26 @@ Grid<T> Solver<T>::Update(const Grid<T>& prev, const Bound<T>& bound) {
   }
 
   return next;
+}
+
+template<typename T>
+void Solver<T>::Progress(size_t iter, size_t max_iter) {
+  double progress = static_cast<double>(iter) / static_cast<double>(max_iter);
+  int total_width = 50;
+  int curr_width = static_cast<int>(total_width * progress);
+
+  std::cout << "[";
+  for (int i = 0; i < total_width; ++i) {
+    if (i < curr_width) {
+      std::cout << "=";
+    } else if (i == curr_width) {
+      std::cout << ">";
+    } else {
+      std::cout << " ";
+    }
+  }
+  std::cout << "] " << static_cast<int>(progress * 100.0) << "%\r";
+  std::cout << std::endl;
 }
 
 } // namespace fluid_dynamics

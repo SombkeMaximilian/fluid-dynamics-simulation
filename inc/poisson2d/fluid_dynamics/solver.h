@@ -51,6 +51,8 @@ class Solver {
   static T DefaultSource(size_t, size_t);
 
   Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
+
+  void Progress(size_t iter, size_t max_iter);
 }; // class Solver
 
 } // namespace fluid_dynamics
