@@ -5,8 +5,7 @@
 #include <complex>
 #include <vector>
 #include <gtest/gtest.h>
-#include "poisson2d/fluid_dynamics/grid.h"
-#include "poisson2d/fluid_dynamics/bound.h"
+#include "poisson2d/poisson2d.h"
 
 template<typename T>
 inline void EXPECT_TYPE_EQ(const T& actual, const T& expected) {
@@ -65,6 +64,27 @@ class BoundTestBase : public ::testing::Test {
         EXPECT_TYPE_EQ(grid(i, j), expected(i, j));
       }
     }
+  }
+};
+
+template<typename T>
+class SolverTestBase : public ::testing::Test {
+ protected:
+  void verifyEpsilon(const fluid_dynamics::Solver<T>& solver, T expected_epsilon) {
+    EXPECT_TYPE_EQ(solver.epsilon(), expected_epsilon);
+  }
+
+  void verifyMaxIter(const fluid_dynamics::Solver<T>& solver, size_t expected_max_iter) {
+    EXPECT_EQ(solver.max_iter(), expected_max_iter);
+  }
+
+  void verifyNorm(const fluid_dynamics::Solver<T>& solver, const fluid_dynamics::Grid<T>& prev,
+                  const fluid_dynamics::Grid<T>& curr, bool exclude_boundaries, T expected_norm) {
+    EXPECT_TYPE_EQ(solver.norm(prev, curr, exclude_boundaries), expected_norm);
+  }
+
+  void verifySource(const fluid_dynamics::Solver<T>& solver, size_t i, size_t j, T expected_source) {
+    EXPECT_TYPE_EQ(solver.source(i, j), expected_source);
   }
 };
 
