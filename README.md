@@ -30,8 +30,8 @@ cmake -S . -B build
 make -C build --no-print-directory
 ```
 which will create the following executables:
-- `FDSimSerial`: Serial implementation
-- `FDSimMPI`: MPI implementation with OpenMP directives
+- `FDSimSerial`: Serial example
+- `FDSimMPI`: MPI example
 - `FDSimUnitTests`: Unit tests
 
 # Running
@@ -40,7 +40,7 @@ which will create the following executables:
 
 The serial executable `FDSimSerial` can be run with the following command:
 ```bash
-build/FDSimSerial -L 102 -epsilon 1e-2 -max_iter 1000
+build/FDSimSerial -L 102 -epsilon 1e-2 -max_iter 3000
 ```
 where the arguments are:
 - `-L` : The size of the grid
