@@ -70,6 +70,9 @@ class BoundTestBase : public ::testing::Test {
 template<typename T>
 class SolverTestBase : public ::testing::Test {
  protected:
+  static constexpr T kDefaultEpsilon = static_cast<T>(1e-6);
+  static constexpr size_t kDefaultMaxIter = 100;
+
   void verifyEpsilon(const fluid_dynamics::Solver<T>& solver, T expected_epsilon) {
     EXPECT_TYPE_EQ(solver.epsilon(), expected_epsilon);
   }
@@ -78,13 +81,33 @@ class SolverTestBase : public ::testing::Test {
     EXPECT_EQ(solver.max_iter(), expected_max_iter);
   }
 
-  void verifyNorm(const fluid_dynamics::Solver<T>& solver, const fluid_dynamics::Grid<T>& prev,
-                  const fluid_dynamics::Grid<T>& curr, bool exclude_boundaries, T expected_norm) {
-    EXPECT_TYPE_EQ(solver.norm(prev, curr, exclude_boundaries), expected_norm);
+  void verifyData(const fluid_dynamics::Grid<T>& grid, const fluid_dynamics::Grid<T>& expected) {
+    for (size_t i = 0; i < grid.rows(); ++i) {
+      for (size_t j = 0; j < grid.cols(); ++j) {
+        EXPECT_TYPE_EQ(grid(i, j), expected(i, j));
+      }
+    }
   }
 
-  void verifySource(const fluid_dynamics::Solver<T>& solver, size_t i, size_t j, T expected_source) {
-    EXPECT_TYPE_EQ(solver.source(i, j), expected_source);
+  static T NewNorm(const fluid_dynamics::Grid<T>& prev, const fluid_dynamics::Grid<T>& curr,
+            bool exclude_boundaries = false) {
+    T norm = 0;
+    size_t start_i = exclude_boundaries ? 1 : 0;
+    size_t start_j = exclude_boundaries ? 1 : 0;
+    size_t end_i = exclude_boundaries ? prev.rows() - 1 : prev.rows();
+    size_t end_j = exclude_boundaries ? prev.cols() - 1 : prev.cols();
+
+    for (size_t i = start_i; i < end_i; ++i) {
+      for (size_t j = start_j; j < end_j; ++j) {
+        norm += std::abs(curr(i, j) - prev(i, j));
+      }
+    }
+
+    return norm;
+  }
+
+  static T NewSource(size_t, size_t) {
+    return 1;
   }
 };
 
