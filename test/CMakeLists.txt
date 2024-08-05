@@ -5,6 +5,7 @@ enable_testing()
 set(TEST_FILES
     test_grid.cpp
     test_bound.cpp
+    test_solver.cpp
     test_utils.h
 )
 
