@@ -58,6 +58,8 @@ def create_stream_plot(data, plot_file):
 
 
 def main():
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(script_dir)
     os.makedirs('plots', exist_ok = True)
     bin_files = [f for f in os.listdir('.') if f.endswith('.bin')]
     for bin_file in bin_files:
