@@ -38,6 +38,9 @@ class Solver {
   Grid<std::pair<T, T>> Gradient(const Grid<T>& field);
   virtual Grid<std::pair<T, T>> Velocity(const Grid<std::pair<T, T>>& grad);
 
+ protected:
+  void Progress(size_t iter, size_t max_iter);
+
  private:
   T epsilon_;
   size_t max_iter_;
@@ -51,8 +54,6 @@ class Solver {
   static T DefaultSource(size_t, size_t);
 
   Grid<T> Update(const Grid<T>& prev, const Bound<T>& bound);
-
-  void Progress(size_t iter, size_t max_iter);
 }; // class Solver
 
 } // namespace fluid_dynamics
