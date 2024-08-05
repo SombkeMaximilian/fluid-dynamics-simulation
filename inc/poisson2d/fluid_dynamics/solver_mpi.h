@@ -2,6 +2,9 @@
 #ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_SOLVER_MPI_H_
 #define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_SOLVER_MPI_H_
 
+#include <chrono>
+#include <iomanip>
+#include <iostream>
 #include <cmath>
 #include <vector>
 #include <functional>

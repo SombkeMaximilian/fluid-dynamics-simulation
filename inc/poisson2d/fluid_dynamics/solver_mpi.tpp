@@ -9,6 +9,8 @@ Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, Mp
   size_t origin_row = mpi_grid.GlobalRow(0, prev.rows());
   size_t origin_col = mpi_grid.GlobalCol(0, prev.cols());
   T local_norm, global_norm;
+  size_t iter;
+  bool converged = false;
   int progress_intervals = static_cast<int>(Solver<T>::max_iter() * 0.05);
   int progress_steps = 0;
 
@@ -24,13 +26,16 @@ Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, Mp
   prev.Resize(prev.rows() + 2, prev.cols() + 2, {1, 1});
   curr.Resize(curr.rows() + 2, curr.cols() + 2, {1, 1});
 
-  for (size_t iter = 0; iter < Solver<T>::max_iter(); ++iter) {
+  auto start = std::chrono::high_resolution_clock::now();
+
+  for (iter = 0; iter < Solver<T>::max_iter(); ++iter) {
     ExchangeBoundaryData(prev, mpi_grid);
     curr = Update(prev, local_bound, mpi_grid);
 
     local_norm = Solver<T>::norm(prev, curr, true);
     MPI_Allreduce(&local_norm, &global_norm, 1, MpiType<T>(), MPI_SUM, mpi_grid.comm());
     if (global_norm < Solver<T>::epsilon()) {
+      converged = true;
       break;
     }
 
@@ -41,8 +46,19 @@ Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, Mp
       ++progress_steps;
     }
   }
+
+  auto end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<long double> time_taken = end - start;
+
   if (verbose && mpi_grid.rank() == 0) {
     Solver<T>::Progress(Solver<T>::max_iter(), Solver<T>::max_iter());
+    if (converged) {
+      std::cout << "Number of iterations to converge: " << iter << std::endl;
+    } else {
+      std::cout << "Reached maximum number of iterations: " << Solver<T>::max_iter() << std::endl;
+      std::cout << "Norm: " << global_norm << std::endl;
+    }
+    std::cout << std::setprecision(6) << "Time taken: " << time_taken.count() << "s\n" << std::endl;
   }
 
   curr.Resize(curr.rows() - 2, curr.cols() - 2, {-1, -1});
