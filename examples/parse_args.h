@@ -51,4 +51,4 @@ void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_i
 
 } // namespace parse_args
 
-#endif //FLUID_DYNAMICS_SIMULATION_EXAMPLES_PARSE_ARGS_H_
+#endif // FLUID_DYNAMICS_SIMULATION_EXAMPLES_PARSE_ARGS_H_
