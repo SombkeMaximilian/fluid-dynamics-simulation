@@ -54,7 +54,7 @@ void Solver<T>::source(std::function<T(size_t, size_t)> source) {
 }
 
 template<typename T>
-Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound) {
+Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound, bool verbose) {
   Grid<T> prev{rows, cols};
   Grid<T> curr{rows, cols};
   int progress_intervals = static_cast<int>(max_iter_ * 0.05);
@@ -68,15 +68,17 @@ Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound) {
   for (size_t iter = 0; iter < max_iter_; ++iter) {
     curr = Update(prev, bound);
     if (norm_(prev, curr, false) < epsilon_) {
-      Progress(max_iter_, max_iter_);
       break;
     }
     prev = curr;
 
-    if (iter == progress_steps * progress_intervals) {
+    if (verbose && iter == progress_steps * progress_intervals) {
       Progress(iter, max_iter_);
       ++progress_steps;
     }
+  }
+  if (verbose) {
+    Progress(max_iter_, max_iter_);
   }
 
   return curr;
