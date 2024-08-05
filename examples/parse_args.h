@@ -19,7 +19,7 @@ void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_i
         std::cout << "Options:" << std::endl;
         std::cout << "  -h, --help  Show this help message and exit" << std::endl;
         std::cout << "  -L          The size of the grid (Default 102)" << std::endl;
-        std::cout << "  -epsilon    The stopping value for the solver (Default 1e-2)" << std::endl;
+        std::cout << "  -epsilon    The stopping criterion for the solver (Default 1e-2)" << std::endl;
         std::cout << "  -max_iter   The maximum number of iterations (Default 10000)" << std::endl;
         exit(0);
       } else if (std::string(argv[i]) == "-L") {
