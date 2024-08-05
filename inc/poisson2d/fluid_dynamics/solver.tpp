@@ -57,17 +57,25 @@ template<typename T>
 Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound, bool verbose) {
   Grid<T> prev{rows, cols};
   Grid<T> curr{rows, cols};
+  T norm;
   int progress_intervals = static_cast<int>(max_iter_ * 0.05);
   int progress_steps = 0;
+  size_t iter;
+  bool converged = false;
 
   for (size_t i = 0; i < prev.rows(); ++i) {
     for (size_t j = 0; j < prev.cols(); ++j) {
       prev(i, j) = source_(i, j);
     }
   }
-  for (size_t iter = 0; iter < max_iter_; ++iter) {
+
+  auto start = std::chrono::high_resolution_clock::now();
+
+  for (iter = 0; iter < max_iter_; ++iter) {
     curr = Update(prev, bound);
-    if (norm_(prev, curr, false) < epsilon_) {
+    norm = norm_(prev, curr, false);
+    if (norm < epsilon_) {
+      converged = true;
       break;
     }
     prev = curr;
@@ -77,8 +85,26 @@ Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound, bool v
       ++progress_steps;
     }
   }
+
+  auto end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<long double> time_taken = end - start;
+
   if (verbose) {
     Progress(max_iter_, max_iter_);
+
+    std::cout.setf(std::ios_base::fixed);
+    std::cout.precision(6);
+
+    if (converged) {
+      std::cout << "Number of iterations to converge: " << iter << std::endl;
+    } else {
+      std::cout << "Reached maximum number of iterations: " << max_iter_ << std::endl;
+      std::cout << "Norm: " << norm << std::endl;
+    }
+    std::cout << "Time Taken: " << time_taken.count() << "s\n" << std::endl;
+
+    std::cout.unsetf(std::ios_base::fixed);
+    std::cout.precision(3);
   }
 
   return curr;
