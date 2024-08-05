@@ -35,4 +35,21 @@ inline void EXPECT_TYPE_EQ(const std::complex<double>& actual, const std::comple
   EXPECT_DOUBLE_EQ(actual.imag(), expected.imag());
 }
 
+template<typename T>
+class GridTestBase : public ::testing::Test {
+ protected:
+  void verifyDimensions(const fluid_dynamics::Grid<T>& grid, size_t expected_rows, size_t expected_cols) {
+    EXPECT_EQ(grid.rows(), expected_rows);
+    EXPECT_EQ(grid.cols(), expected_cols);
+  }
+
+  void verifyData(const fluid_dynamics::Grid<T>& actual, const std::vector<T>& expected) {
+    for (size_t i = 0; i < actual.rows(); ++i) {
+      for (size_t j = 0; j < actual.cols(); ++j) {
+        EXPECT_TYPE_EQ(actual(i, j), expected[i * actual.cols() + j]);
+      }
+    }
+  }
+};
+
 #endif //FLUID_DYNAMICS_SIMULATION_TEST_TEST_UTILS_H_

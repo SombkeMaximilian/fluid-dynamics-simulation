@@ -14,21 +14,7 @@ using GridTypes = ::testing::Types<
 >;
 
 template<typename T>
-class GridConstructorTest : public ::testing::Test {
- protected:
-  void verifyDimensions(const fluid_dynamics::Grid<T>& grid, size_t expected_rows, size_t expected_cols) {
-    EXPECT_EQ(grid.rows(), expected_rows);
-    EXPECT_EQ(grid.cols(), expected_cols);
-  }
-
-  void verifyData(const fluid_dynamics::Grid<T>& actual, const std::vector<T>& expected) {
-    for (size_t i = 0; i < actual.rows(); ++i) {
-      for (size_t j = 0; j < actual.cols(); ++j) {
-          EXPECT_TYPE_EQ(actual(i, j), expected[i * actual.cols() + j]);
-      }
-    }
-  }
-};
+class GridConstructorTest : public GridTestBase<T> {};
 
 TYPED_TEST_SUITE(GridConstructorTest, GridTypes);
 
