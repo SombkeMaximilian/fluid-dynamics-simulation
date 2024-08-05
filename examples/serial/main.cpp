@@ -143,6 +143,6 @@ int main(int argc, char* argv[]) {
   velocities = solver.Velocity(grad);
 
   std::cout << "Writing the flow velocity values to file.." << std::endl;
-  WriteGridBinary(velocities, "vec.bin");
+  WriteGridBinary(velocities, "plot/vec.bin");
   return 0;
 }
