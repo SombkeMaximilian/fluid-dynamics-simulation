@@ -3,7 +3,7 @@
 #include <vector>
 #include <gtest/gtest.h>
 #include "test_utils.h"
-#include "poisson2d/fluid_dynamics/grid.h"
+#include "poisson2d/poisson2d.h"
 
 using GridTypes = ::testing::Types<
     int,
