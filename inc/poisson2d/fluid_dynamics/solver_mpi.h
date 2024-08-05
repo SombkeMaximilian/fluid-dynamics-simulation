@@ -1,6 +1,6 @@
-// File: inc/poisson2d/solver_mpi.h
-#ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_MPI_H_
-#define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_MPI_H_
+// File: inc/poisson2d/fluid_dynamics/solver_mpi.h
+#ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_SOLVER_MPI_H_
+#define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_SOLVER_MPI_H_
 
 #include <cmath>
 #include <vector>
@@ -32,4 +32,4 @@ class SolverMpi : public Solver<T> {
 
 #include "solver_mpi.tpp"
 
-#endif // FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_SOLVER_MPI_H_
+#endif // FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_SOLVER_MPI_H_

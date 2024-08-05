@@ -1,4 +1,4 @@
-// File: inc/poisson2d/grid.tpp
+// File: inc/poisson2d/fluid_dynamics/grid.tpp
 namespace fluid_dynamics {
 
 template<typename T>

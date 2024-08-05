@@ -5,8 +5,8 @@
 #include <complex>
 #include <vector>
 #include <gtest/gtest.h>
-#include "poisson2d/grid.h"
-#include "poisson2d/bound.h"
+#include "poisson2d/fluid_dynamics/grid.h"
+#include "poisson2d/fluid_dynamics/bound.h"
 
 template<typename T>
 inline void EXPECT_TYPE_EQ(const T& actual, const T& expected) {

@@ -1,4 +1,4 @@
-// File: inc/poisson2d/solver_mpi.h
+// File: inc/poisson2d/fluid_dynamics/solver_mpi.h
 namespace fluid_dynamics {
 
 template<typename T>

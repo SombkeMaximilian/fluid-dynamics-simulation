@@ -1,6 +1,6 @@
-// File: inc/poisson2d/mpi_util.h
-#ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_MPI_UTIL_H_
-#define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_MPI_UTIL_H_
+// File: inc/poisson2d/fluid_dynamics/mpi_util.h
+#ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_MPI_UTIL_H_
+#define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_MPI_UTIL_H_
 
 #include <complex>
 #include <utility>
@@ -82,4 +82,4 @@ template<typename T> static inline MPI_Datatype GetMpiType();
 
 #include "mpi_util.tpp"
 
-#endif // FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_MPI_UTIL_H_
+#endif // FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_MPI_UTIL_H_

@@ -1,4 +1,4 @@
-#include "mpipoisson2d.h"
+#include "poisson2d/mpipoisson2d.h"
 
 fluid_dynamics::Bound<double> CreateBound(size_t L) {
   size_t L_half = L / 2;

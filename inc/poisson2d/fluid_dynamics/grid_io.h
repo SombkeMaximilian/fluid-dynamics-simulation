@@ -1,6 +1,6 @@
-// File: inc/poisson2d/grid_io.h
-#ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_GRID_IO_H_
-#define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_GRID_IO_H_
+// File: inc/poisson2d/fluid_dynamics/grid_io.h
+#ifndef FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_GRID_IO_H_
+#define FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_GRID_IO_H_
 
 #include <fstream>
 #include <string>
@@ -17,4 +17,4 @@ template<typename T> void WriteGridText(const Grid<std::pair<T, T>>& grid, const
 
 #include "grid_io.tpp"
 
-#endif //FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_GRID_IO_H_
+#endif //FLUID_DYNAMICS_SIMULATION_INC_POISSON2D_FLUID_DYNAMICS_GRID_IO_H_

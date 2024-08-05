@@ -3,8 +3,8 @@
 #include <vector>
 #include <gtest/gtest.h>
 #include "test_utils.h"
-#include "poisson2d/grid.h"
-#include "poisson2d/bound.h"
+#include "poisson2d/fluid_dynamics/grid.h"
+#include "poisson2d/fluid_dynamics/bound.h"
 
 using BoundTypes = ::testing::Types<
     int,
