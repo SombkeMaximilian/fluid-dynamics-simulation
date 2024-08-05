@@ -142,7 +142,7 @@ int main(int argc, char* argv[]) {
   std::cout << "Computing the flow velocities.." << std::endl;
   velocities = solver.Velocity(grad);
 
+  std::cout << "Writing the flow velocity values to file.." << std::endl;
   WriteGridBinary(velocities, "vec.bin");
-  WriteGridText(velocities, "vec.txt");
   return 0;
 }
