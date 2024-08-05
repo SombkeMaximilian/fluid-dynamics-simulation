@@ -7,9 +7,6 @@
 # CMake build directory
 cmake-build-debug/
 
-# Plots directory
-plot/
-
 # Prerequisites
 *.d
 
@@ -42,3 +39,6 @@ plot/
 *.exe
 *.out
 *.app
+
+# Binary files
+*.bin
