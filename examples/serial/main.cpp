@@ -132,9 +132,20 @@ int main(int argc, char* argv[]) {
   fluid_dynamics::Grid<std::pair<double, double>> grad(L), velocities(L);
   fluid_dynamics::Bound<double> bound = CreateBound(L);
   fluid_dynamics::Solver<double> solver(epsilon, max_iter);
+  int epsilon_precision = 0;
+
+  while (epsilon < 1) {
+    epsilon *= 10;
+    ++epsilon_precision;
+  }
+  std::cout.setf(std::ios_base::fixed);
+  std::cout.precision(epsilon_precision);
 
   std::cout << "Computing the stream function values on the grid.." << std::endl;
   grid = solver.Solve(L, L, bound, true);
+
+  std::cout.unsetf(std::ios_base::fixed);
+  std::cout.precision(6);
 
   std::cout << "Computing the gradient of the stream function.." << std::endl;
   grad = solver.Gradient(grid);

@@ -91,20 +91,13 @@ Grid<T> Solver<T>::Solve(size_t rows, size_t cols, const Bound<T>& bound, bool v
 
   if (verbose) {
     Progress(max_iter_, max_iter_);
-
-    std::cout.setf(std::ios_base::fixed);
-    std::cout.precision(6);
-
     if (converged) {
       std::cout << "Number of iterations to converge: " << iter << std::endl;
     } else {
       std::cout << "Reached maximum number of iterations: " << max_iter_ << std::endl;
       std::cout << "Norm: " << norm << std::endl;
     }
-    std::cout << "Time Taken: " << time_taken.count() << "s\n" << std::endl;
-
-    std::cout.unsetf(std::ios_base::fixed);
-    std::cout.precision(3);
+    std::cout << std::setprecision(3) << "Time Taken: " << time_taken.count() << "s\n" << std::endl;
   }
 
   return curr;
