@@ -41,7 +41,7 @@ Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, Mp
       ++progress_steps;
     }
   }
-  if (verbose) {
+  if (verbose && mpi_grid.rank() == 0) {
     Solver<T>::Progress(Solver<T>::max_iter(), Solver<T>::max_iter());
   }
 
