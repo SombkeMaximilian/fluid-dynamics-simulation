@@ -229,7 +229,7 @@ void WriteGridBinary(Grid<T>& grid, const std::string& filename, MpiGrid2D& mpi_
   MPI_File file;
   MPI_Offset file_size = mpi_grid.rows() * grid.rows() * mpi_grid.cols() * grid.cols() * sizeof(T);
   MPI_Offset row_size = grid.cols() * sizeof(T);
-  MPI_Offset row_offset = 0;
+  MPI_Offset row_offset;
   int mode = MPI_MODE_CREATE | MPI_MODE_WRONLY;
 
   mpi_grid.CreateRowType(grid.cols(), GetMpiType<T>());
