@@ -53,3 +53,12 @@ The parallelized executable `FDSimMPI` can be run with the following command:
 mpirun -np 4 build/FDSimMPI -L 102 -epsilon 1e-2 -max_iter 5000
 ```
 where the arguments are the same as the serial example, with the additional `-np` flag to specify the number of MPI processes.
+
+### Visualizing the results
+
+The output of the simulation is stored in a file named `velocity.bin`. To visualize the results, run the python script `plot.py` in the `plot` directory:
+```bash
+python3 plot/plot.py
+```
+which will generate a plot of the velocity field in the `plot/plots` directory. For the example above, the plot will be saved as `plot/plots/velocity.png` and will look like this:
+![Simulation Result](img/velocity.png)
