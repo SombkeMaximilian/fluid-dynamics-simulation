@@ -37,8 +37,11 @@ def create_stream_plot(data, plot_file):
     color_map = plt.get_cmap('turbo')
 
     fig, ax = plt.subplots()
+    fig.set_figwidth(8)
+    fig.set_figheight(6)
+
     stream = ax.streamplot(x, y, u, v, density = 1.7, color = magnitude, cmap = color_map,
-                           linewidth = 1.2, arrowsize = 1.5, arrowstyle = 'fancy', zorder = 1)
+                           linewidth = 1.2, arrowsize = 1.5, arrowstyle = 'fancy')
     fig.colorbar(stream.lines)
 
     ax.set_title('Stream Plot of Flow Velocity')
@@ -52,8 +55,21 @@ def create_stream_plot(data, plot_file):
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
 
-    plt.savefig(plot_file, dpi = 1000, bbox_inches = 'tight',
+    plt.savefig(plot_file + "_stream.png", dpi = 1000, bbox_inches = 'tight',
                 pad_inches = 0.1, format = 'png')
+
+    stream.lines.set_visible(False)
+    for element in ax.get_children():
+        if isinstance(element, matplotlib.patches.FancyArrowPatch):
+            element.set_visible(False)
+
+    ax.imshow(magnitude, cmap = color_map, origin = 'lower', alpha = 0.9)
+
+    ax.set_title('Magnitude of Flow Velocity')
+
+    plt.savefig(plot_file + "_magnitude.png", dpi = 1000, bbox_inches = 'tight',
+                pad_inches = 0.1, format = 'png')
+
     plt.close(fig)
 
 
@@ -65,7 +81,7 @@ def main():
     for bin_file in bin_files:
         data = read_data(bin_file)
         transformed_data = transform_data(data)
-        plot_file = os.path.join('plots', bin_file.replace('.bin', '.png'))
+        plot_file = os.path.join('plots', bin_file.replace('.bin', ''))
         create_stream_plot(transformed_data, plot_file)
 
 
