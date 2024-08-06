@@ -140,6 +140,7 @@ int main(int argc, char* argv[]) {
   fluid_dynamics::Solver<double> solver(epsilon, max_iter);
   int epsilon_precision = 0;
 
+  epsilon = epsilon * epsilon;
   while (epsilon < 1) {
     epsilon *= 10;
     ++epsilon_precision;

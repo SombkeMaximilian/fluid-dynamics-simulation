@@ -154,6 +154,7 @@ int main(int argc, char** argv) {
   int epsilon_precision = 0;
 
   if (mpi_grid.rank() == 0) {
+    epsilon = epsilon * epsilon;
     while (epsilon < 1) {
       epsilon *= 10;
       ++epsilon_precision;
