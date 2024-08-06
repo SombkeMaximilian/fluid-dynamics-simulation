@@ -127,13 +127,13 @@ int main(int argc, char** argv) {
   size_t L;
   double epsilon;
   size_t max_iter;
-  bool unknown_option;
+  bool terminate;
 
   if (mpi_grid.rank() == 0) {
-    parse_args::ParseArgs(argc, argv, L, epsilon, max_iter, unknown_option);
-    if (unknown_option) {
-      MPI_Abort(mpi_grid.comm(), 1);
-      return 1;
+    parse_args::ParseArgs(argc, argv, L, epsilon, max_iter, terminate);
+    if (terminate) {
+      MPI_Abort(mpi_grid.comm(), 0);
+      return 0;
     }
   }
   MPI_Bcast(&L, 1, MPI_UNSIGNED_LONG, 0, mpi_grid.comm());

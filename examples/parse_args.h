@@ -4,26 +4,37 @@
 
 namespace parse_args {
 
-void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_iter, bool& unknown_option) {
+void PrintOptions(char* argv[]) {
+  std::cout << "Usage: " << std::endl;
+  std::cout << "  " << argv[0] << " [options]" << std::endl;
+  std::cout << "Options:" << std::endl;
+  std::cout << "  -h, --help  Show this help message and exit" << std::endl;
+  std::cout << "  -L          The size of the grid (Default 102)" << std::endl;
+  std::cout << "  -epsilon    The stopping criterion for the solver (Default 1e-2)" << std::endl;
+  std::cout << "  -max_iter   The maximum number of iterations (Default 3000)" << std::endl;
+}
+
+void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_iter, bool& terminate) {
   bool L_flag = false;
   bool epsilon_flag = false;
   bool max_iter_flag = false;
 
-  unknown_option = false;
+  terminate = false;
 
-  if (argc == 0) {
-    std::cout << "Usage: " << argv[0] << " [options]" << std::endl;
-  }
-  if (argc > 1) {
+  if (argc == 1) {
+    PrintOptions(argv);
+    terminate = true;
+  } else if (argc > 1) {
     for (size_t i = 1; i < argc; ++i) {
       if (std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help") {
-        std::cout << "Usage: " << argv[0] << " [options]" << std::endl;
-        std::cout << "Options:" << std::endl;
-        std::cout << "  -h, --help  Show this help message and exit" << std::endl;
-        std::cout << "  -L          The size of the grid (Default 102)" << std::endl;
-        std::cout << "  -epsilon    The stopping criterion for the solver (Default 1e-2)" << std::endl;
-        std::cout << "  -max_iter   The maximum number of iterations (Default 10000)" << std::endl;
-        exit(0);
+        PrintOptions(argv);
+        terminate = true;
+        break;
+      } else if (std::string(argv[i]) == "--default") {
+        L_flag = false;
+        epsilon_flag = false;
+        max_iter_flag = false;
+        break;
       } else if (std::string(argv[i]) == "-L") {
         L = std::stoul(argv[++i]);
         L_flag = true;
@@ -35,7 +46,7 @@ void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_i
         max_iter_flag = true;
       } else {
         std::cerr << "Unknown option: " << argv[i] << std::endl;
-        unknown_option = true;
+        terminate = true;
       }
     }
   }
@@ -47,7 +58,7 @@ void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_i
     epsilon = 1e-2;
   }
   if (!max_iter_flag) {
-    max_iter = 10000;
+    max_iter = 3000;
   }
 }
 
