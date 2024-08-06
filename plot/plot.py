@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 
 def read_data(file = 'vec.bin'):
@@ -16,7 +17,9 @@ def transform_data(data):
     return square_array
 
 
-def create_stream_plot(data, plot_file):
+def create_plots(data, name, threshold = 0.001, remove_border = True, color_map = 'turbo', size = (8, 6),
+                 density = 1.7, linewidth = 1.2, arrowsize = 1.5, arrowstyle = 'fancy', alpha = 0.9,
+                 dpi = 1000, format = 'png'):
     side_length = data.shape[0]
     x_i = np.linspace(0, side_length - 1, side_length)
     y_i = np.linspace(0, side_length - 1, side_length)
@@ -25,23 +28,25 @@ def create_stream_plot(data, plot_file):
     v = data[:, :, 1]
     magnitude = np.sqrt(u**2 + v**2)
 
-    u[0, :] = np.nan
-    u[-1, :] = np.nan
-    u[:, 0] = np.nan
-    u[:, -1] = np.nan
-    v[0, :] = np.nan
-    v[-1, :] = np.nan
-    v[:, 0] = np.nan
-    v[:, -1] = np.nan
+    u[magnitude < threshold] = np.nan
+    v[magnitude < threshold] = np.nan
 
-    color_map = plt.get_cmap('turbo')
+    if remove_border:
+        u[0, :] = np.nan
+        u[-1, :] = np.nan
+        u[:, 0] = np.nan
+        u[:, -1] = np.nan
+        v[0, :] = np.nan
+        v[-1, :] = np.nan
+        v[:, 0] = np.nan
+        v[:, -1] = np.nan
 
     fig, ax = plt.subplots()
-    fig.set_figwidth(8)
-    fig.set_figheight(6)
+    fig.set_figwidth(size[0])
+    fig.set_figheight(size[1])
 
-    stream = ax.streamplot(x, y, u, v, density = 1.7, color = magnitude, cmap = color_map,
-                           linewidth = 1.2, arrowsize = 1.5, arrowstyle = 'fancy')
+    stream = ax.streamplot(x, y, u, v, density = density, color = magnitude, cmap = color_map,
+                           linewidth = linewidth, arrowsize = arrowsize, arrowstyle = arrowstyle)
     fig.colorbar(stream.lines)
 
     ax.set_title('Stream Plot of Flow Velocity')
@@ -55,20 +60,20 @@ def create_stream_plot(data, plot_file):
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
 
-    plt.savefig(plot_file + "_stream.png", dpi = 1000, bbox_inches = 'tight',
-                pad_inches = 0.1, format = 'png')
+    plt.savefig(name + "_stream." + format, dpi = dpi, bbox_inches ='tight',
+                pad_inches = 0.1, format = format)
 
     stream.lines.set_visible(False)
     for element in ax.get_children():
         if isinstance(element, matplotlib.patches.FancyArrowPatch):
             element.set_visible(False)
 
-    ax.imshow(magnitude, cmap = color_map, origin = 'lower', alpha = 0.9)
+    ax.imshow(magnitude, cmap = color_map, origin = 'lower', alpha = alpha)
 
     ax.set_title('Magnitude of Flow Velocity')
 
-    plt.savefig(plot_file + "_magnitude.png", dpi = 1000, bbox_inches = 'tight',
-                pad_inches = 0.1, format = 'png')
+    plt.savefig(name + "_magnitude." + format, dpi = dpi, bbox_inches ='tight',
+                pad_inches = 0.1, format = format)
 
     plt.close(fig)
 
@@ -81,8 +86,8 @@ def main():
     for bin_file in bin_files:
         data = read_data(bin_file)
         transformed_data = transform_data(data)
-        plot_file = os.path.join('plots', bin_file.replace('.bin', ''))
-        create_stream_plot(transformed_data, plot_file)
+        name = os.path.join('plots', bin_file.replace('.bin', ''))
+        create_plots(transformed_data, name)
 
 
 if __name__ == '__main__':
