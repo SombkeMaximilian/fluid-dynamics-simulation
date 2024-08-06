@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
   if (terminate) {
     return 0;
   }
-  std::cout << "Running with L = " << L << ", epsilon = " << epsilon << ", max_iter = " << max_iter << std::endl;
+  std::cout << "Running with L = " << L << ", epsilon = " << epsilon << ", max_iter = " << max_iter << "\n" << std::endl;
 
   fluid_dynamics::Grid<double> grid;
   fluid_dynamics::Grid<std::pair<double, double>> grad(L), velocities(L);
@@ -150,17 +150,21 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Computing the stream function values on the grid.." << std::endl;
   grid = solver.Solve(L, L, bound, true);
+  std::cout << std::endl;
 
   std::cout.unsetf(std::ios_base::fixed);
   std::cout.precision(6);
 
   std::cout << "Computing the gradient of the stream function.." << std::endl;
   grad = solver.Gradient(grid);
+  std::cout << "Done.\n" << std::endl;
 
   std::cout << "Computing the flow velocities.." << std::endl;
   velocities = solver.Velocity(grad);
+  std::cout << "Done.\n" << std::endl;
 
   std::cout << "Writing the flow velocity values to file.." << std::endl;
   WriteGridBinary(velocities, "plot/velocity.bin");
+  std::cout << "Done.\n" << std::endl;
   return 0;
 }

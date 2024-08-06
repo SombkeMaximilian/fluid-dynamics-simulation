@@ -140,7 +140,7 @@ int main(int argc, char** argv) {
   MPI_Bcast(&epsilon, 1, MPI_DOUBLE, 0, mpi_grid.comm());
   MPI_Bcast(&max_iter, 1, MPI_UNSIGNED_LONG, 0, mpi_grid.comm());
   if (mpi_grid.rank() == 0) {
-    std::cout << "Running with L = " << L << ", epsilon = " << epsilon << ", max_iter = " << max_iter << std::endl;
+    std::cout << "Running with L = " << L << ", epsilon = " << epsilon << ", max_iter = " << max_iter << "\n" << std::endl;
   }
   MPI_Barrier(mpi_grid.comm());
 
@@ -167,21 +167,33 @@ int main(int argc, char** argv) {
     std::cout << "Computing the stream function values on the grid.." << std::endl;
   }
   grid = solver.Solve(local_rows, local_cols, bound, mpi_grid, true);
+  if (mpi_grid.rank() == 0) {
+    std::cout << std::endl;
+  }
 
   if (mpi_grid.rank() == 0) {
     std::cout << "Computing the gradient of the stream function.." << std::endl;
   }
   grad = solver.Gradient(grid, mpi_grid);
+  if (mpi_grid.rank() == 0) {
+    std::cout << "Done.\n" << std::endl;
+  }
 
   if (mpi_grid.rank() == 0) {
     std::cout << "Computing the flow velocities.." << std::endl;
   }
   velocities = solver.Velocity(grad);
+  if (mpi_grid.rank() == 0) {
+    std::cout << "Done.\n" << std::endl;
+  }
 
   if (mpi_grid.rank() == 0) {
     std::cout << "Writing the flow velocity values to file.." << std::endl;
   }
   WriteGridBinary(velocities, "plot/velocity.bin", mpi_grid);
+  if (mpi_grid.rank() == 0) {
+    std::cout << "Done.\n" << std::endl;
+  }
 
   return 0;
 }
