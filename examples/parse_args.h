@@ -47,6 +47,7 @@ void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_i
       } else {
         std::cerr << "Unknown option: " << argv[i] << std::endl;
         terminate = true;
+        break;
       }
     }
   }
