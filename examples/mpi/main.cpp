@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
   size_t L;
   double epsilon;
   size_t max_iter;
-  bool unknown_option = false;
+  bool unknown_option;
 
   if (mpi_grid.rank() == 0) {
     parse_args::ParseArgs(argc, argv, L, epsilon, max_iter, unknown_option);
