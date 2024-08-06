@@ -15,6 +15,8 @@ void PrintOptions(char* argv[]) {
 }
 
 void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_iter, bool& terminate) {
+  long long L_test;
+  long long max_iter_test;
   bool L_flag = false;
   bool epsilon_flag = false;
   bool max_iter_flag = false;
@@ -36,13 +38,30 @@ void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_i
         max_iter_flag = false;
         break;
       } else if (std::string(argv[i]) == "-L") {
-        L = std::stoul(argv[++i]);
+        L_test = std::stoll(argv[++i]);
+        if (L_test <= 0) {
+          std::cerr << "L must be greater than 0" << std::endl;
+          terminate = true;
+          break;
+        }
+        L = static_cast<size_t>(L_test);
         L_flag = true;
       } else if (std::string(argv[i]) == "-epsilon") {
         epsilon = std::stod(argv[++i]);
         epsilon_flag = true;
+        if (epsilon <= 0) {
+          std::cerr << "epsilon must be greater than 0" << std::endl;
+          terminate = true;
+          break;
+        }
       } else if (std::string(argv[i]) == "-max_iter") {
-        max_iter = std::stoul(argv[++i]);
+        max_iter_test = std::stoll(argv[++i]);
+        if (max_iter_test <= 0) {
+          std::cerr << "max_iter must be greater than 0" << std::endl;
+          terminate = true;
+          break;
+        }
+        max_iter = static_cast<size_t>(max_iter_test);
         max_iter_flag = true;
       } else {
         std::cerr << "Unknown option: " << argv[i] << std::endl;
