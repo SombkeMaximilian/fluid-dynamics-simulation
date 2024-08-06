@@ -9,6 +9,7 @@ void PrintOptions(char* argv[]) {
   std::cout << "  " << argv[0] << " [options]" << std::endl;
   std::cout << "Options:" << std::endl;
   std::cout << "  -h, --help  Show this help message and exit" << std::endl;
+  std::cout << "  --default   Use default values for all options" << std::endl;
   std::cout << "  -L          The size of the grid (Default 102)" << std::endl;
   std::cout << "  -epsilon    The stopping criterion for the solver (Default 1e-2)" << std::endl;
   std::cout << "  -max_iter   The maximum number of iterations (Default 3000)" << std::endl;
