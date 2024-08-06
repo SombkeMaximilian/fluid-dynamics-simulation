@@ -61,9 +61,14 @@ The output of the simulation is stored in a file named `velocity.bin`. To visual
 ```bash
 python3 plot/plot.py
 ```
-which will generate a plot of the velocity field in the `plot/plots` directory. For the example above, the plot will be saved as `plot/plots/velocity.png` and will look like this:
+which will generate a plot of the velocity field in the `plot/plots` directory. For the example above, the plots will be saved as 
+- `plot/plots/velocity_stream.png`
 
-![Simulation Result](https://github.com/SombkeMaximilian/fluid-dynamics-simulation/blob/main/img/velocity.png?)
+![Simulation Result](https://github.com/SombkeMaximilian/fluid-dynamics-simulation/blob/main/img/velocity_stream.png?)
+
+- `plot/plots/velocity_magnitude.png`
+
+![Simulation Result](https://github.com/SombkeMaximilian/fluid-dynamics-simulation/blob/main/img/velocity_magnitude.png?)
 
 ## Testing
 
