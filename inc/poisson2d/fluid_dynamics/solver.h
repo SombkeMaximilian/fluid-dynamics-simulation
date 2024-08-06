@@ -50,8 +50,8 @@ class Solver {
   std::function<T(const Grid<T>&, const Grid<T>&, bool)> norm_;
   std::function<T(size_t, size_t)> source_;
 
-  static constexpr T kDefaultEpsilon = static_cast<T>(1e-6);
-  static constexpr size_t kDefaultMaxIter = 100;
+  static constexpr T kDefaultEpsilon = static_cast<T>(1e-4);
+  static constexpr size_t kDefaultMaxIter = 1000;
 
   static T DefaultNorm(const Grid<T>& prev, const Grid<T>& curr, bool exclude_boundaries = false);
   static T DefaultSource(size_t, size_t);
