@@ -57,7 +57,7 @@ where the arguments are the same as the serial example, with the additional `-np
 
 ## Visualizing the results
 
-The output of the simulation is stored in a file named `velocity.bin`. To visualize the results, run the python script `plot.py` in the `plot` directory:
+The output of the example simulation is stored in a file named `velocity.bin`. To visualize the results, run the python script `plot.py` in the `plot` directory:
 ```bash
 python3 plot/plot.py
 ```
