@@ -17,9 +17,9 @@ def transform_data(data):
     return square_array
 
 
-def create_plots(data, name, threshold = 0.001, remove_border = True, color_map = 'turbo', size = (8, 6),
+def create_plots(data, name, threshold = 0.001, remove_border = True, remove_zeros = True,
                  density = 1.7, linewidth = 1.2, arrowsize = 1.5, arrowstyle = 'fancy', alpha = 0.9,
-                 dpi = 1000, format = 'png'):
+                 color_map = 'turbo', size = (8, 6), dpi = 1000, format = 'png'):
     side_length = data.shape[0]
     x_i = np.linspace(0, side_length - 1, side_length)
     y_i = np.linspace(0, side_length - 1, side_length)
@@ -30,6 +30,10 @@ def create_plots(data, name, threshold = 0.001, remove_border = True, color_map 
 
     u[magnitude < threshold] = np.nan
     v[magnitude < threshold] = np.nan
+
+    if remove_zeros:
+        u[(u == 0) | (v == 0)] = np.nan
+        v[(u == 0) | (v == 0)] = np.nan
 
     if remove_border:
         u[0, :] = np.nan
