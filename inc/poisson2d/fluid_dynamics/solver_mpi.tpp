@@ -58,7 +58,7 @@ Grid<T> SolverMpi<T>::Solve(size_t rows, size_t cols, Bound<T>& global_bound, Mp
       std::cout << "Reached maximum number of iterations: " << Solver<T>::max_iter() << std::endl;
       std::cout << "Norm: " << global_norm << std::endl;
     }
-    std::cout << std::setprecision(6) << "Time taken: " << time_taken.count() << "s\n" << std::endl;
+    std::cout << std::setprecision(6) << "Time taken: " << time_taken.count() << "s" << std::endl;
   }
 
   curr.Resize(curr.rows() - 2, curr.cols() - 2, {-1, -1});
