@@ -124,6 +124,8 @@ Grid<T> SolverMpi<T>::Update(const Grid<T>& prev, Bound<T>& local_bound, MpiGrid
   size_t origin_col = mpi_grid.GlobalCol(0, prev.cols() - 2);
   bool is_boundary = false;
 
+  #pragma omp parallel for default(none) collapse(2) schedule(guided) \
+          shared(prev, next, local_bound, origin_row, origin_col) private(is_boundary)
   for (size_t i = 1; i < prev.rows() - 1; ++i) {
     for (size_t j = 1; j < prev.cols() - 1; ++j) {
       for (Boundary<T> boundary : local_bound.boundaries()) {
