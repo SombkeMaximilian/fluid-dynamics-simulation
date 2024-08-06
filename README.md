@@ -1,6 +1,6 @@
 # 2D Fluid Dynamics Simulation
 
-A 2D fluid dynamics simulation library implemented in C++ using MPI and OpenMP. 
+A 2D fluid dynamics simulation library implemented in C++. 
 Poisson's equation is solved over a two-dimensional grid using the Jacobi iteration method.
 Contains a serial implementation, and a hybrid implementation using MPI and OpenMP.
 
@@ -70,7 +70,7 @@ which will generate a plot of the velocity field in the `plot/plots` directory. 
 
 ![Simulation Result](https://github.com/SombkeMaximilian/fluid-dynamics-simulation/blob/main/img/velocity_magnitude.png?)
 
-## Testing
+# Tests
 
 The unit tests can be run with the following command:
 ```bash
