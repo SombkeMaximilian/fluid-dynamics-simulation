@@ -34,7 +34,7 @@ def create_stream_plot(data, plot_file):
     v[:, 0] = np.nan
     v[:, -1] = np.nan
 
-    color_map = plt.get_cmap('magma')
+    color_map = plt.get_cmap('turbo')
 
     fig, ax = plt.subplots()
     stream = ax.streamplot(x, y, u, v, density = 1.7, color = magnitude, cmap = color_map,
