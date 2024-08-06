@@ -4,10 +4,12 @@
 
 namespace parse_args {
 
-void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_iter) {
+void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_iter, bool& unknown_option) {
   bool L_flag = false;
   bool epsilon_flag = false;
   bool max_iter_flag = false;
+
+  unknown_option = false;
 
   if (argc == 0) {
     std::cout << "Usage: " << argv[0] << " [options]" << std::endl;
@@ -33,7 +35,7 @@ void ParseArgs(int argc, char* argv[], size_t& L, double& epsilon, size_t& max_i
         max_iter_flag = true;
       } else {
         std::cerr << "Unknown option: " << argv[i] << std::endl;
-        exit(1);
+        unknown_option = true;
       }
     }
   }

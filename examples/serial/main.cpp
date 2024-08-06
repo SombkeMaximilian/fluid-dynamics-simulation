@@ -126,8 +126,12 @@ int main(int argc, char* argv[]) {
   size_t L;
   double epsilon;
   size_t max_iter;
+  bool unknown_option;
 
-  parse_args::ParseArgs(argc, argv, L, epsilon, max_iter);
+  parse_args::ParseArgs(argc, argv, L, epsilon, max_iter, unknown_option);
+  if (unknown_option) {
+    return 1;
+  }
   std::cout << "Running with L = " << L << ", epsilon = " << epsilon << ", max_iter = " << max_iter << std::endl;
 
   fluid_dynamics::Grid<double> grid;
