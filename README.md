@@ -1,6 +1,6 @@
 # 2D Fluid Dynamics Simulation
 
-A 2D fluid dynamics simulation library implemented in C++ using MPI and OpenMP. 
+A 2D fluid dynamics simulation library implemented in C++. 
 Poisson's equation is solved over a two-dimensional grid using the Jacobi iteration method.
 Contains a serial implementation, and a hybrid implementation using MPI and OpenMP.
 
