@@ -51,6 +51,7 @@ where the arguments are:
 
 The parallelized executable `FDSimMPI` can be run with the following command:
 ```bash
+export OMP_NUM_THREADS=4
 mpirun -np 9 --oversubscribe build/FDSimMPI -L 102 -epsilon 1e-6 -max_iter 10000
 ```
 where the arguments are the same as the serial example, with the additional `-np` flag to specify the number of MPI processes.
